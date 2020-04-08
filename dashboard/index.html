@@ -112,6 +112,32 @@
             </div>
           </span>
 
+          <div class="mt-5">
+            <table class="table table-sm small border-bottom" id="first-job-info">
+              <tbody>
+                <tr>
+                  <th scope="row">Job ID</th>
+                  <td id="info-job-id">5e8b78d5</td>
+                </tr>
+
+                <tr>
+                  <th scope="row"># of Generators</th>
+                  <td id="info-job-id">0</td>
+                </tr>
+
+                <tr>
+                  <th scope="row"># of Workers</th>
+                  <td id="info-job-id">400</td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Max Depth</th>
+                  <td id="info-job-id">5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </nav>
 
@@ -134,7 +160,7 @@
               </div>
             </div>
 
-            <div class="btn-group mr-2">
+            <div class="btn-group mr-auto">
               <button id="secondary-plot-title" type="button" class="btn btn-outline-secondary dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Percent Paths Finished
@@ -150,15 +176,71 @@
               </div>
             </div>
 
+            <div class="btn-group">
+              <button class="btn dropdown-toggle" type="button" id="viewMenu" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <svg class="bi bi-gear" width="1.5em" height="1.5em" viewBox="0 0 20 18" fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 014.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 01-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 011.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 012.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 012.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 011.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 01-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 018.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 001.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 00.52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 00-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 00-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 00-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 00-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 00.52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 001.255-.52l.094-.319z"
+                    clip-rule="evenodd" />
+                  <path fill-rule="evenodd"
+                    d="M8 5.754a2.246 2.246 0 100 4.492 2.246 2.246 0 000-4.492zM4.754 8a3.246 3.246 0 116.492 0 3.246 3.246 0 01-6.492 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="viewMenu">
+                <div class="px-3 py-2">
+
+                  <div class="form-check">
+                    <input type="checkbox" checked class="form-check-input view-state-option" id="splitViewCheck">
+                    <label class="form-check-label" for="splitViewCheck">
+                      Split View
+                    </label>
+                  </div>
+
+                </div>
+
+                <div class="dropdown-divider"></div>
+
+                <div class="px-3 py-2">
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input view-state-option" id="showJobStartCheck">
+                    <label class="form-check-label" for="showJobStartCheck">
+                      Job Start
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input view-state-option" id="show95DoneCheck">
+                    <label class="form-check-label" for="show95DoneCheck">
+                      95% Done
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input view-state-option" id="show99Check">
+                    <label class="form-check-label" for="show99Check">
+                      99% Done
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div id="plot-top" class="plot h-50 d-flex justify-content-center align-items-center border-bottom">
+        <div id="plot-top" class="plot h-50 d-flex justify-content-center align-items-center">
         </div>
-        <div id="plot-bottom" class="plot h-50 d-flex justify-content-center align-items-center">
+
+        <div id="plot-bottom" class="plot h-50 d-flex justify-content-center d-none align-items-center border-top">
         </div>
-      </main>
     </div>
+    </main>
+  </div>
   </div>
 
   <script src="js/jquery-3.4.1.slim.min.js"></script>
@@ -167,120 +249,8 @@
 
   <script src="js/d3/d3.min.js"></script>
   <script src="js/d3/helpers.js"></script>
-  <script>
-    // var info = d3.json("data/example/info.json");
 
-    var _state = {
-      primary_plot: "rays_enqueued",
-      secondary_plot: "paths"
-    };
-
-    var refresh_view = () => {
-      Promise.all([
-        d3.csv("data/example/data.csv"),
-        d3.json("data/example/info.json"),
-        d3.csv("data/example/data.csv"),
-        d3.json("data/example/info.json"),
-      ]).then((values) => {
-        let [primary_data, primary_info, secondary_data, secondary_info] = values;
-
-        let metrics = {
-          paths: {
-            label: "Paths Finished (%)",
-            func: (d) => (100 * d.runningCompletion / +primary_info.totalPaths),
-            format: "d"
-          },
-          rays_enqueued: {
-            label: "Rays Enqueued",
-            func: (d) => d.raysEnqueued,
-            format: "~s"
-          },
-          rays_dequeued: {
-            label: "Rays Dequeued",
-            func: (d) => d.raysDequeued,
-            format: "~s"
-          },
-          bags: {
-            label: "Average Bag Size (bytes)",
-            func: (d) => d.bagsEnqueued,
-            format: "~s"
-          },
-          bytes: {
-            label: "Bytes Transferred",
-            func: (d) => d.bytesEnqueued,
-            format: "~s"
-          },
-          none: {
-            label: null,
-            func: null,
-            format: ""
-          }
-        };
-
-        var primary_selected = metrics[_state.primary_plot];
-        var secondary_selected = metrics[_state.secondary_plot];
-
-        var primary_figure = create_figure("#plot-top");
-        var secondary_figure = create_figure("#plot-bottom");
-
-        plot_graph(primary_figure, primary_data,
-          (d) => d.timestampS, primary_selected.func,
-          {
-            xlabel: "Timestamp (s)",
-            ylabel: primary_selected.label,
-            linecolor: 'blue',
-            yformat: primary_selected.format,
-
-            fy2: secondary_selected.func,
-            y2label: secondary_selected.label,
-            y2format: secondary_selected.format
-          });
-
-        plot_graph(secondary_figure, secondary_data,
-          (d) => d.timestampS, primary_selected.func,
-          {
-            xlabel: "Timestamp (s)",
-            ylabel: primary_selected.label,
-            linecolor: 'red',
-            yformat: primary_selected.format,
-
-            fy2: secondary_selected.func,
-            y2label: secondary_selected.label,
-            y2format: secondary_selected.format
-          });
-
-        annotate_x(primary_figure,
-          primary_info.generationTime + primary_info.initializationTime,
-          "job start");
-
-        annotate_x(secondary_figure,
-          primary_info.generationTime + primary_info.initializationTime,
-          "job start");
-      });
-
-    };
-
-    $(document).ready(() => {
-
-      $("#primary-plot-menu a").click((e) => {
-        $("#primary-plot-title").html(e.target.innerHTML);
-        _state.primary_plot = e.target.getAttribute("plot-id");
-        refresh_view();
-        e.preventDefault();
-      });
-
-      $("#secondary-plot-menu a").click((e) => {
-        $("#secondary-plot-title").html(e.target.innerHTML);
-        _state.secondary_plot = e.target.getAttribute("plot-id");
-        refresh_view();
-        e.preventDefault();
-      });
-
-      refresh_view();
-
-    });
-
-  </script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>

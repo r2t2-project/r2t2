@@ -1,135 +1,131 @@
-var create_figure = function (box) {
-  const margin = { top: 10, left: 70, right: 70, bottom: 50 };
-  const width = document.querySelector(box).offsetWidth - margin.left - margin.right - 70;
-  const height = document.querySelector(box).offsetHeight - margin.top - margin.bottom - 70;
+"use strict";
 
-  d3.select(`${box} > *`).remove();
+class Figure {
+  constructor(box) {
+    this.axes = {};
 
-  var svg = d3.select(box)
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+    const margin = { top: 10, left: 70, right: 70, bottom: 50 };
+    const width = document.querySelector(box).offsetWidth - margin.left - margin.right - 70;
+    const height = document.querySelector(box).offsetHeight - margin.top - margin.bottom - 70;
 
-  svg._width = width;
-  svg._height = height;
-  svg._margin = margin;
+    d3.select(`${box} > *`).remove();
 
-  return svg;
-};
+    this.svg = d3.select(box)
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-var plot_graph = function (svg, data, fx, fy,
-  { xlabel = "", ylabel = "",
-    xrange = null, yrange = null,
-    yformat = "", xformat = "",
-    linecolor = "steelblue",
-
-    /* secondary */
-    fy2 = null, y2label = "", y2range = null, y2format = "" } = {}) {
-
-  if (!xrange) {
-    xrange = d3.extent(data, (d) => +fx(d));
+    this.width = width;
+    this.height = height;
+    this.margin = margin;
   }
 
-  if (!yrange) {
-    yrange = d3.extent(data, (d) => +fy(d));
-  }
+  create_axis(type, range, label, format) {
+    var axis = this.axes[type] = d3.scaleLinear().domain(range);
 
-  var x = d3.scaleLinear()
-    .domain(xrange)
-    .range([0, svg._width]);
-
-  svg._x = x;
-
-  svg.append("g")
-    .attr("transform", `translate(0, ${svg._height})`)
-    .call(d3.axisBottom(x).tickFormat(d3.format(xformat)));
-
-  // text label for the x axis
-  svg.append("text")
-    .attr("transform",
-      `translate(${svg._width / 2}, ${svg._height + svg._margin.top + 35})`)
-    .style("text-anchor", "middle")
-    .text(xlabel);
-
-  var y = d3.scaleLinear()
-    .domain(yrange)
-    .range([svg._height, 0]);
-
-  svg._y = y;
-
-  svg.append("g")
-    .call(d3.axisLeft(y).tickFormat(d3.format(yformat)));
-
-  svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - svg._margin.left)
-    .attr("x", 0 - (svg._height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .text(ylabel);
-
-  svg.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", linecolor)
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-      .x((d) => x(fx(d)))
-      .y((d) => y(fy(d))));
-
-  if (fy2) {
-    if (!y2range) {
-      y2range = d3.extent(data, (d) => +fy2(d));
+    if (type == "x" || type == "x2") {
+      axis.range([0, this.width]);
+    }
+    else {
+      axis.range([this.height, 0]);
     }
 
-    let y2 = d3.scaleLinear()
-      .domain(y2range)
-      .range([svg._height, 0]);
+    if (type == "x") {
+      this.svg.append("g")
+        .attr("transform", `translate(0, ${this.height})`)
+        .call(d3.axisBottom(this.axes.x).tickFormat(d3.format(format)));
 
-    svg.append("g")
-      .attr("transform", `translate(${svg._width}, 0)`)
-      .call(d3.axisRight(y2)
-        .tickFormat(d3.format(y2format)));
+      // text label for the x axis
+      this.svg.append("text")
+        .attr("transform", `translate(${this.width / 2}, ${this.height + this.margin.top + 35})`)
+        .style("text-anchor", "middle")
+        .text(label);
+    }
+    else if (type == "y") {
+      this.svg.append("g")
+        .call(d3.axisLeft(this.axes.y).tickFormat(d3.format(format)));
 
-    svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", svg._width + svg._margin.right)
-      .attr("x", 0 - (svg._height / 2))
-      .attr("dy", "-1em")
-      .style("text-anchor", "middle")
-      .text(y2label);
+      this.svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - this.margin.left)
+        .attr("x", 0 - (this.height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text(label);
+    }
+    else if (type == "x2") {
 
-    svg.append("path")
+    }
+    else if (type == "y2") {
+      this.svg.append("g")
+        .attr("transform", `translate(${this.width}, 0)`)
+        .call(d3.axisRight(this.axes.y2)
+          .tickFormat(d3.format(format)));
+
+      this.svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", this.width + this.margin.right)
+        .attr("x", 0 - (this.height / 2))
+        .attr("dy", "-1em")
+        .style("text-anchor", "middle")
+        .text(label);
+    }
+
+    return this;
+  }
+
+  path(data, fx, fy,
+    { x = "x", y = "y",
+      linecolor = "steelblue",
+      width = 1.5,
+      dasharray = null } = {}) {
+    if (!(x in this.axes)) {
+      var range = d3.extent(data, (d) => +fx(d));
+      create_axis(x, range, "", "");
+    }
+
+    if (!(y in this.axes)) {
+      var range = d3.extent(data, (d) => +fy(d));
+      create_axis(y, range, "", "");
+    }
+
+    this.svg.append("path")
       .datum(data)
       .attr("fill", "none")
-      .attr("stroke", 'gray')
-      .attr("stroke-width", 2.5)
-      .attr("stroke-dasharray", ("3, 3"))
+      .attr("stroke", linecolor)
+      .attr("stroke-width", width)
+      .attr("stroke-dasharray", dasharray)
       .attr("d", d3.line()
-        .x((d) => x(fx(d)))
-        .y((d) => y2(fy2(d))));
+        .x((d) => this.axes[x](fx(d)))
+        .y((d) => this.axes[y](fy(d))));
+
+    return this;
   }
-};
 
-var annotate_x = function (svg, x, label) {
-  svg.append("line")
-    .attr("stroke", '#cccccc')
-    .attr('stroke-width', 1.0)
-    .attr("stroke-dasharray", ("2,4"))
-    .attr("x1", svg._x(x))
-    .attr("x2", svg._x(x))
-    .attr("y1", 0)
-    .attr("y2", svg._height);
+  annotate_line(axis, value, label) {
+    const actual = this.axes[axis](value);
 
-  svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", svg._x(x))
-    .attr("x", 0)
-    .attr("dy", "-0.5em")
-    .attr("fill", '#cccccc')
-    .attr("font-size", "0.75rem")
-    .style("text-anchor", "end")
-    .text(`${label} = ${x}`);
+    if (axis == "x") {
+      this.svg.append("line")
+        .attr("stroke", '#cccccc')
+        .attr('stroke-width', 1.0)
+        .attr("stroke-dasharray", ("2,4"))
+        .attr("x1", actual)
+        .attr("x2", actual)
+        .attr("y1", 0)
+        .attr("y2", this.height);
+
+      this.svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", actual)
+        .attr("x", 0 - this.height / 2)
+        .attr("dy", "-0.5em")
+        .attr("fill", '#cccccc')
+        .attr("font-size", "0.75rem")
+        .style("text-anchor", "middle")
+        .text(`${label}`);
+    }
+  }
 };

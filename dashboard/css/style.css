@@ -117,3 +117,7 @@ body {
 i.material-icons {
   font-size:1.2rem;
 }
+
+.h-0 {
+  height:0;
+}
