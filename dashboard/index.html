@@ -1,0 +1,286 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>R2T2 Dashboard</title>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">R2T2 Dashboard</a>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="#"></a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container-fluid main-container">
+    <div class="row h-100">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+
+          <div class="dropdown pb-1">
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              moana-full-nvidia
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <h6 class="dropdown-header">SCENE</h6>
+              <a class="dropdown-item" href="#">moana-full-nvidia</a>
+              <a class="dropdown-item" href="#">moana-subset-nvidia</a>
+              <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
+            </div>
+          </div>
+
+          <span class="dropdown pb-1">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              64
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
+              <a class="dropdown-item" href="#">1</a>
+              <a class="dropdown-item" href="#">16</a>
+              <a class="dropdown-item" href="#">64</a>
+              <a class="dropdown-item" href="#">128</a>
+            </div>
+          </span>
+
+          <span class="dropdown pb-1">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              400
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <h6 class="dropdown-header">WORKER COUNT</h6>
+              <a class="dropdown-item" href="#">400</a></a>
+              <a class="dropdown-item" href="#">800</a>
+              <a class="dropdown-item" href="#">1200</a>
+              <a class="dropdown-item" href="#">1600</a>
+            </div>
+          </span>
+
+          <div class="pt-3 pb-3">vs.</div>
+
+          <div class="dropdown pb-1">
+            <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              moana-full-nvidia
+            </a><span class="ml-2">
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <h6 class="dropdown-header">SCENE</h6>
+                <a class="dropdown-item" href="#">moana-full-nvidia</a>
+                <a class="dropdown-item" href="#">moana-subset-nvidia</a>
+                <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
+              </div>
+          </div>
+
+          <span class="dropdown pb-1">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              64
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
+              <a class="dropdown-item" href="#">1</a>
+              <a class="dropdown-item" href="#">16</a>
+              <a class="dropdown-item" href="#">64</a>
+              <a class="dropdown-item" href="#">128</a>
+            </div>
+          </span>
+
+          <span class="dropdown pb-1">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              400
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <h6 class="dropdown-header">WORKER COUNT</h6>
+              <a class="dropdown-item" href="#">400</a></a>
+              <a class="dropdown-item" href="#">800</a>
+              <a class="dropdown-item" href="#">1200</a>
+              <a class="dropdown-item" href="#">1600</a>
+            </div>
+          </span>
+
+        </div>
+      </nav>
+
+      <main role="main" class="d-flex flex-column ml-sm-auto col-lg-10 px-4">
+        <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
+
+          <div class="btn-toolbar" role="group" aria-label="Views">
+
+            <div class="btn-group mr-2">
+              <button id="primary-plot-title" type="button" class="btn btn-outline-primary dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Rays Enqueued
+              </button>
+              <div id="primary-plot-menu" class="dropdown-menu">
+                <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
+                <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
+                <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
+                <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
+                <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+              </div>
+            </div>
+
+            <div class="btn-group mr-2">
+              <button id="secondary-plot-title" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Percent Paths Finished
+              </button>
+              <div id="secondary-plot-menu" class="dropdown-menu">
+                <a class="dropdown-item" plot-id="none" href="#">None</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
+                <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
+                <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
+                <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
+                <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="plot-top" class="plot h-50 d-flex justify-content-center align-items-center border-bottom">
+        </div>
+        <div id="plot-bottom" class="plot h-50 d-flex justify-content-center align-items-center">
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/jquery-3.4.1.slim.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap/bootstrap.min.js"></script>
+
+  <script src="js/d3/d3.min.js"></script>
+  <script src="js/d3/helpers.js"></script>
+  <script>
+    // var info = d3.json("data/example/info.json");
+
+    var _state = {
+      primary_plot: "rays_enqueued",
+      secondary_plot: "paths"
+    };
+
+    var refresh_view = () => {
+      Promise.all([
+        d3.csv("data/example/data.csv"),
+        d3.json("data/example/info.json"),
+        d3.csv("data/example/data.csv"),
+        d3.json("data/example/info.json"),
+      ]).then((values) => {
+        let [primary_data, primary_info, secondary_data, secondary_info] = values;
+
+        let metrics = {
+          paths: {
+            label: "Paths Finished (%)",
+            func: (d) => (100 * d.runningCompletion / +primary_info.totalPaths),
+            format: "d"
+          },
+          rays_enqueued: {
+            label: "Rays Enqueued",
+            func: (d) => d.raysEnqueued,
+            format: "~s"
+          },
+          rays_dequeued: {
+            label: "Rays Dequeued",
+            func: (d) => d.raysDequeued,
+            format: "~s"
+          },
+          bags: {
+            label: "Average Bag Size (bytes)",
+            func: (d) => d.bagsEnqueued,
+            format: "~s"
+          },
+          bytes: {
+            label: "Bytes Transferred",
+            func: (d) => d.bytesEnqueued,
+            format: "~s"
+          },
+          none: {
+            label: null,
+            func: null,
+            format: ""
+          }
+        };
+
+        var primary_selected = metrics[_state.primary_plot];
+        var secondary_selected = metrics[_state.secondary_plot];
+
+        var primary_figure = create_figure("#plot-top");
+        var secondary_figure = create_figure("#plot-bottom");
+
+        plot_graph(primary_figure, primary_data,
+          (d) => d.timestampS, primary_selected.func,
+          {
+            xlabel: "Timestamp (s)",
+            ylabel: primary_selected.label,
+            linecolor: 'blue',
+            yformat: primary_selected.format,
+
+            fy2: secondary_selected.func,
+            y2label: secondary_selected.label,
+            y2format: secondary_selected.format
+          });
+
+        plot_graph(secondary_figure, secondary_data,
+          (d) => d.timestampS, primary_selected.func,
+          {
+            xlabel: "Timestamp (s)",
+            ylabel: primary_selected.label,
+            linecolor: 'red',
+            yformat: primary_selected.format,
+
+            fy2: secondary_selected.func,
+            y2label: secondary_selected.label,
+            y2format: secondary_selected.format
+          });
+
+        annotate_x(primary_figure,
+          primary_info.generationTime + primary_info.initializationTime,
+          "job start");
+
+        annotate_x(secondary_figure,
+          primary_info.generationTime + primary_info.initializationTime,
+          "job start");
+      });
+
+    };
+
+    $(document).ready(() => {
+
+      $("#primary-plot-menu a").click((e) => {
+        $("#primary-plot-title").html(e.target.innerHTML);
+        _state.primary_plot = e.target.getAttribute("plot-id");
+        refresh_view();
+        e.preventDefault();
+      });
+
+      $("#secondary-plot-menu a").click((e) => {
+        $("#secondary-plot-title").html(e.target.innerHTML);
+        _state.secondary_plot = e.target.getAttribute("plot-id");
+        refresh_view();
+        e.preventDefault();
+      });
+
+      refresh_view();
+
+    });
+
+  </script>
+</body>
+
+</html>
