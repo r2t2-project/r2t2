@@ -5,8 +5,8 @@ class Figure {
     this.axes = {};
 
     const margin = { top: 50, left: 70, right: 70, bottom: 50 };
-    const width = document.querySelector(box).offsetWidth - margin.left - margin.right;
-    const height = document.querySelector(box).offsetHeight - margin.top - margin.bottom - 40;
+    const width = document.querySelector(box).offsetWidth - margin.left - margin.right - 50;
+    const height = document.querySelector(box).offsetHeight - margin.top - margin.bottom - 50;
 
     d3.select(`${box} > *`).remove();
 

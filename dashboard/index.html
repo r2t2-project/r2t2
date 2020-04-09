@@ -14,13 +14,110 @@
 
 <body>
 
-  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">R2T2 Dashboard</a>
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link" href="#"></a>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark flex-md-nowrap p-0 border-bottom">
+
+    <div class="navbar-brand col-md-2 mr-0 d-flex h-100 align-items-center">
+
+      <img src="img/logo.svg" style="height:1.2em;" class="mr-2">
+      <span class="font-weight-bolder sr-only">Dashboard</span>
+
+    </div>
+
+    <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item dropdown btn-group-sm mr-2 ml-2">
+
+        <button id="primary-plot-title" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Rays Enqueued
+        </button>
+
+        <div id="primary-plot-menu" class="dropdown-menu">
+          <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
+          <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
+          <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
+          <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
+          <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+        </div>
+
       </li>
+
+      <li class="nav-item dropdown btn-group-sm mr-2">
+
+        <button id="secondary-plot-title" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Percent Paths Finished
+        </button>
+
+        <div id="secondary-plot-menu" class="dropdown-menu">
+          <a class="dropdown-item" plot-id="none" href="#">None</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
+          <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
+          <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
+          <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
+          <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+        </div>
+
+      </li>
+
+      <li class="nav-item dropdown btn-group-sm mr-2">
+
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="viewMenu" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+
+          <svg class="bi bi-gear-fill" width="1.25em" height="1.25em" viewBox="0 0 20 18" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z"
+              clip-rule="evenodd" />
+          </svg>
+
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="viewMenu">
+          <div class="px-3 py-2">
+
+            <div class="form-check">
+              <input type="checkbox" checked class="form-check-input view-state-option" id="splitViewCheck">
+              <label class="form-check-label" for="splitViewCheck">
+                Split View
+              </label>
+            </div>
+
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="px-3 py-2">
+
+            <div class="form-check">
+              <input type="checkbox" checked class="form-check-input view-state-option" id="showJobStartCheck">
+              <label class="form-check-label" for="showJobStartCheck">
+                Job Start
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" checked class="form-check-input view-state-option" id="show95DoneCheck">
+              <label class="form-check-label" for="show95DoneCheck">
+                95% Done
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" checked class="form-check-input view-state-option" id="show99DoneCheck">
+              <label class="form-check-label" for="show99DoneCheck">
+                99% Done
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </li>
+
     </ul>
+
   </nav>
 
   <div class="container-fluid main-container">
@@ -28,93 +125,101 @@
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
 
-          <h6>Scene <span class="text-primary">A</span></h6>
+          <div class="p-3 border-bottom">
+            <h6>Scene <span class="text-primary">A</span></h6>
 
-          <div class="dropdown pb-1">
-            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              moana-full-nvidia
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <h6 class="dropdown-header">SCENE</h6>
-              <a class="dropdown-item" href="#">moana-full-nvidia</a>
-              <a class="dropdown-item" href="#">moana-subset-nvidia</a>
-              <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
-            </div>
-          </div>
-
-          <span class="dropdown pb-1">
-            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              64
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
-              <a class="dropdown-item" href="#">1</a>
-              <a class="dropdown-item" href="#">16</a>
-              <a class="dropdown-item" href="#">64</a>
-              <a class="dropdown-item" href="#">128</a>
-            </div>
-          </span>
-
-          <span class="dropdown pb-1">
-            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              400
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <h6 class="dropdown-header">WORKER COUNT</h6>
-              <a class="dropdown-item" href="#">400</a></a>
-              <a class="dropdown-item" href="#">800</a>
-              <a class="dropdown-item" href="#">1200</a>
-              <a class="dropdown-item" href="#">1600</a>
-            </div>
-          </span>
-
-          <h6 class="mt-4">Scene <span class="text-danger">B</span></h6>
-
-          <div class="dropdown pb-1">
-            <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              moana-full-nvidia
-            </a><span class="ml-2">
+            <div class="dropdown pb-1">
+              <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                moana-full-nvidia
+              </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <h6 class="dropdown-header">SCENE</h6>
                 <a class="dropdown-item" href="#">moana-full-nvidia</a>
                 <a class="dropdown-item" href="#">moana-subset-nvidia</a>
                 <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
               </div>
+            </div>
+
+            <span class="dropdown pb-1">
+              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                64
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
+                <a class="dropdown-item" href="#">1</a>
+                <a class="dropdown-item" href="#">16</a>
+                <a class="dropdown-item" href="#">64</a>
+                <a class="dropdown-item" href="#">128</a>
+              </div>
+            </span>
+
+            <span class="dropdown pb-1">
+              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                400
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <h6 class="dropdown-header">WORKER COUNT</h6>
+                <a class="dropdown-item" href="#">400</a></a>
+                <a class="dropdown-item" href="#">800</a>
+                <a class="dropdown-item" href="#">1200</a>
+                <a class="dropdown-item" href="#">1600</a>
+              </div>
+            </span>
+
           </div>
 
-          <span class="dropdown pb-1">
-            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              64
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
-              <a class="dropdown-item" href="#">1</a>
-              <a class="dropdown-item" href="#">16</a>
-              <a class="dropdown-item" href="#">64</a>
-              <a class="dropdown-item" href="#">128</a>
-            </div>
-          </span>
+          <div class="p-3 border-bottom">
 
-          <span class="dropdown pb-1">
-            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              400
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <h6 class="dropdown-header">WORKER COUNT</h6>
-              <a class="dropdown-item" href="#">400</a></a>
-              <a class="dropdown-item" href="#">800</a>
-              <a class="dropdown-item" href="#">1200</a>
-              <a class="dropdown-item" href="#">1600</a>
-            </div>
-          </span>
+            <h6>Scene <span class="text-danger">B</span></h6>
 
-          <div class="mt-4 pt-4 border-top">
+            <div class="dropdown pb-1">
+              <a class="btn btn-sm btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                moana-full-nvidia
+              </a><span class="ml-2">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <h6 class="dropdown-header">SCENE</h6>
+                  <a class="dropdown-item" href="#">moana-full-nvidia</a>
+                  <a class="dropdown-item" href="#">moana-subset-nvidia</a>
+                  <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
+                </div>
+            </div>
+
+            <span class="dropdown pb-1">
+              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                64
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
+                <a class="dropdown-item" href="#">1</a>
+                <a class="dropdown-item" href="#">16</a>
+                <a class="dropdown-item" href="#">64</a>
+                <a class="dropdown-item" href="#">128</a>
+              </div>
+            </span>
+
+            <span class="dropdown pb-1">
+              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                400
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <h6 class="dropdown-header">WORKER COUNT</h6>
+                <a class="dropdown-item" href="#">400</a></a>
+                <a class="dropdown-item" href="#">800</a>
+                <a class="dropdown-item" href="#">1200</a>
+                <a class="dropdown-item" href="#">1600</a>
+              </div>
+            </span>
+
+          </div>
+
+          <div class="p-3">
+
             <h6>Job Information</h6>
             <table class="table table-bordered table-sm small border-bottom">
               <thead>
@@ -125,103 +230,13 @@
               <tbody id="jobsInfoTableBody">
               </tbody>
             </table>
+
           </div>
 
         </div>
       </nav>
 
-      <main role="main" class="d-flex flex-column ml-sm-auto col-lg-10 px-4">
-        <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3">
-
-          <div class="btn-toolbar" role="group" aria-label="Views">
-
-            <div class="btn-group mr-2">
-              <button id="primary-plot-title" type="button" class="btn btn-outline-primary dropdown-toggle"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Rays Enqueued
-              </button>
-              <div id="primary-plot-menu" class="dropdown-menu">
-                <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
-                <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
-                <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
-                <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
-                <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
-              </div>
-            </div>
-
-            <div class="btn-group mr-auto">
-              <button id="secondary-plot-title" type="button" class="btn btn-outline-secondary dropdown-toggle"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Percent Paths Finished
-              </button>
-              <div id="secondary-plot-menu" class="dropdown-menu">
-                <a class="dropdown-item" plot-id="none" href="#">None</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
-                <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
-                <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
-                <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
-                <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
-              </div>
-            </div>
-
-            <div class="btn-group">
-              <button class="btn dropdown-toggle" type="button" id="viewMenu" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <svg class="bi bi-gear" width="1.5em" height="1.5em" viewBox="0 0 20 18" fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd"
-                    d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 014.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 01-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 011.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 012.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 012.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 011.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 01-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 018.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 001.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 00.52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 00-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 00-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 00-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 00-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 00.52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 001.255-.52l.094-.319z"
-                    clip-rule="evenodd" />
-                  <path fill-rule="evenodd"
-                    d="M8 5.754a2.246 2.246 0 100 4.492 2.246 2.246 0 000-4.492zM4.754 8a3.246 3.246 0 116.492 0 3.246 3.246 0 01-6.492 0z"
-                    clip-rule="evenodd" />
-                </svg>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="viewMenu">
-                <div class="px-3 py-2">
-
-                  <div class="form-check">
-                    <input type="checkbox" checked class="form-check-input view-state-option" id="splitViewCheck">
-                    <label class="form-check-label" for="splitViewCheck">
-                      Split View
-                    </label>
-                  </div>
-
-                </div>
-
-                <div class="dropdown-divider"></div>
-
-                <div class="px-3 py-2">
-
-                  <div class="form-check">
-                    <input type="checkbox" checked class="form-check-input view-state-option" id="showJobStartCheck">
-                    <label class="form-check-label" for="showJobStartCheck">
-                      Job Start
-                    </label>
-                  </div>
-
-                  <div class="form-check">
-                    <input type="checkbox" checked class="form-check-input view-state-option" id="show95DoneCheck">
-                    <label class="form-check-label" for="show95DoneCheck">
-                      95% Done
-                    </label>
-                  </div>
-
-                  <div class="form-check">
-                    <input type="checkbox" checked class="form-check-input view-state-option" id="show99DoneCheck">
-                    <label class="form-check-label" for="show99DoneCheck">
-                      99% Done
-                    </label>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
+      <main role="main" class="d-flex flex-column ml-sm-auto col-lg-10 px-0">
         <div id="plot-top" class="plot h-50 d-flex justify-content-center align-items-center">
         </div>
 

@@ -96,8 +96,7 @@ var update_jobs_info = (info) => {
         <th scope="row">${job_info[property].label}</th>
         <td>${job_info[property].format(info[0][property])}</td>
         <td>${job_info[property].format(info[1][property])}</td>
-      </tr>
-    `);
+      </tr>`);
   }
 };
 
