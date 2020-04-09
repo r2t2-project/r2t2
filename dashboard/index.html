@@ -28,6 +28,8 @@
       <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
 
+          <h6>Scene <span class="text-primary">A</span></h6>
+
           <div class="dropdown pb-1">
             <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,7 +44,7 @@
           </div>
 
           <span class="dropdown pb-1">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               64
             </a>
@@ -56,7 +58,7 @@
           </span>
 
           <span class="dropdown pb-1">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               400
             </a>
@@ -69,7 +71,7 @@
             </div>
           </span>
 
-          <div class="pt-3 pb-3">vs.</div>
+          <h6 class="mt-4">Scene <span class="text-danger">B</span></h6>
 
           <div class="dropdown pb-1">
             <a class="btn btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -85,7 +87,7 @@
           </div>
 
           <span class="dropdown pb-1">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               64
             </a>
@@ -99,7 +101,7 @@
           </span>
 
           <span class="dropdown pb-1">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               400
             </a>
@@ -112,28 +114,15 @@
             </div>
           </span>
 
-          <div class="mt-5">
-            <table class="table table-sm small border-bottom" id="first-job-info">
-              <tbody>
-                <tr>
-                  <th scope="row">Job ID</th>
-                  <td id="info-job-id">5e8b78d5</td>
-                </tr>
-
-                <tr>
-                  <th scope="row"># of Generators</th>
-                  <td id="info-job-id">0</td>
-                </tr>
-
-                <tr>
-                  <th scope="row"># of Workers</th>
-                  <td id="info-job-id">400</td>
-                </tr>
-
-                <tr>
-                  <th scope="row">Max Depth</th>
-                  <td id="info-job-id">5</td>
-                </tr>
+          <div class="mt-4 pt-4 border-top">
+            <h6>Job Information</h6>
+            <table class="table table-bordered table-sm small border-bottom">
+              <thead>
+                <th scope="col"></th>
+                <th scope="col" class="text-primary">A</th>
+                <th scope="col" class="text-danger">B</th>
+              </thead>
+              <tbody id="jobsInfoTableBody">
               </tbody>
             </table>
           </div>

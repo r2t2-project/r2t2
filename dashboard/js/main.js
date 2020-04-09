@@ -47,6 +47,60 @@ var metrics = (info) => {
   }
 };
 
+var job_info = {
+  numLambdas: {
+    label: "Workers",
+    format: d => d
+  },
+  numGenerators: {
+    label: "Generators",
+    format: d => d
+  },
+  memcachedServers: {
+    label: "Memcached",
+    format: d => d / 4
+  },
+  maxDepth: {
+    label: "Depth",
+    format: d => d
+  },
+  spp: {
+    label: "SPP",
+    format: d => d
+  },
+  outputSize: {
+    label: "Size",
+    format: d => `${d.x}&times;${d.y}`
+  },
+  totalUpload: {
+    label: "Upload",
+    format: d => format_bytes(d, 1)
+  },
+  totalDownload: {
+    label: "Download",
+    format: d => format_bytes(d, 1)
+  },
+  totalSamples: {
+    label: "Samples",
+    format: d => format_bytes(d, 1)
+  },
+  
+};
+
+var update_jobs_info = (info) => {
+  $("#jobsInfoTableBody").html("");
+
+  for (let property in job_info) {
+    $("#jobsInfoTableBody").append(`
+      <tr>
+        <th scope="row">${job_info[property].label}</th>
+        <td>${job_info[property].format(info[0][property])}</td>
+        <td>${job_info[property].format(info[1][property])}</td>
+      </tr>
+    `);
+  }
+};
+
 var refresh_view = () => {
   Promise.all([
     d3.csv("data/example/a/data.csv"),
@@ -59,6 +113,8 @@ var refresh_view = () => {
 
     var data = [values[0], values[2]];
     var info = [values[1], values[3]];
+
+    update_jobs_info(info);
 
     var selected = [
       [metrics(info[A])[_state.primary_plot], metrics(info[A])[_state.secondary_plot]],

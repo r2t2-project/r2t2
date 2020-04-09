@@ -1,1 +1,31 @@
-{"jobId":"5e8b78d5","numLambdas":400,"numGenerators":0,"treeletCount":162,"outputSize":{"x":1024,"y":429},"spp":64,"tileSize":{"x":28,"y":28},"maxDepth":5,"memcachedServers":64,"storageBackend":"s3://r2t2-us-west-1/moana-full-nvidia?region=us-west-1","totalTime":114.521,"generationTime":0,"initializationTime":12.769,"tracingTime":101.752,"totalPaths":"28114944","finishedPaths":"28114944","finishedRays":"53160640","numEnqueues":"4126068348","rayThroughput":11604.998209935296,"totalUpload":"254599941224","totalDownload":"254599941224","totalSamples":"1913783040","estimatedCost":0}
+{
+  "jobId": "5e8b78d5",
+  "numLambdas": 400,
+  "numGenerators": 0,
+  "treeletCount": 162,
+  "outputSize": {
+    "x": 1024,
+    "y": 429
+  },
+  "spp": 64,
+  "tileSize": {
+    "x": 28,
+    "y": 28
+  },
+  "maxDepth": 5,
+  "memcachedServers": 64,
+  "storageBackend": "s3://r2t2-us-west-1/moana-full-nvidia?region=us-west-1",
+  "totalTime": 114.521,
+  "generationTime": 0,
+  "initializationTime": 12.769,
+  "tracingTime": 101.752,
+  "totalPaths": "28114944",
+  "finishedPaths": "28114944",
+  "finishedRays": "53160640",
+  "numEnqueues": "4126068348",
+  "rayThroughput": 11604.998209935296,
+  "totalUpload": "254599941224",
+  "totalDownload": "254599941224",
+  "totalSamples": "1913783040",
+  "estimatedCost": 0
+}
