@@ -114,10 +114,6 @@ body {
   height: calc(100vh - 36px);
 }
 
-i.material-icons {
-  font-size:1.2rem;
-}
-
 .h-0 {
   height:0;
 }

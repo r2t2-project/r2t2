@@ -4,9 +4,9 @@ class Figure {
   constructor(box) {
     this.axes = {};
 
-    const margin = { top: 10, left: 70, right: 70, bottom: 50 };
-    const width = document.querySelector(box).offsetWidth - margin.left - margin.right - 70;
-    const height = document.querySelector(box).offsetHeight - margin.top - margin.bottom - 70;
+    const margin = { top: 50, left: 70, right: 70, bottom: 50 };
+    const width = document.querySelector(box).offsetWidth - margin.left - margin.right;
+    const height = document.querySelector(box).offsetHeight - margin.top - margin.bottom - 40;
 
     d3.select(`${box} > *`).remove();
 
@@ -39,7 +39,7 @@ class Figure {
 
       // text label for the x axis
       this.svg.append("text")
-        .attr("transform", `translate(${this.width / 2}, ${this.height + this.margin.top + 35})`)
+        .attr("transform", `translate(${this.width / 2}, ${this.height + 40})`)
         .style("text-anchor", "middle")
         .text(label);
     }
@@ -104,13 +104,15 @@ class Figure {
     return this;
   }
 
-  annotate_line(axis, value, label) {
+  annotate_line(axis, value, label,
+    { color = "#999999", opacity = 1.0 } = {}) {
     const actual = this.axes[axis](value);
 
     if (axis == "x") {
       this.svg.append("line")
-        .attr("stroke", '#cccccc')
+        .attr("stroke", color)
         .attr('stroke-width', 1.0)
+        .attr('stroke-opacity', opacity)
         .attr("stroke-dasharray", ("2,4"))
         .attr("x1", actual)
         .attr("x2", actual)
@@ -120,11 +122,13 @@ class Figure {
       this.svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", actual)
-        .attr("x", 0 - this.height / 2)
-        .attr("dy", "-0.5em")
-        .attr("fill", '#cccccc')
-        .attr("font-size", "0.75rem")
-        .style("text-anchor", "middle")
+        .attr("x", 0)
+        .attr("dy", "0.25em")
+        .attr("dx", "0.5em")
+        .attr("fill", color)
+        .attr("fill-opacity", opacity)
+        .attr("font-size", "0.6rem")
+        .style("text-anchor", "start")
         .text(`${label}`);
     }
   }

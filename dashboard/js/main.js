@@ -3,7 +3,12 @@
 var _state = {
   primary_plot: "rays_enqueued",
   secondary_plot: "paths",
-  split_view: true
+  split_view: true,
+  markers: {
+    start: true,
+    done_95: true,
+    done_99: true
+  }
 };
 
 var completion_time = (data, f, total_paths) => {
@@ -105,6 +110,20 @@ var refresh_view = () => {
                 width: 2.5,
                 dasharray: ("3, 3")
               });
+
+          if (_state.markers.start) {
+            figures[i].annotate_line("x", info[i].initializationTime, "job start");
+          }
+
+          if (_state.markers.done_95) {
+            figures[i].annotate_line("x",
+              completion_time(data[i], 0.95, info[i].totalPaths), "95% done");
+          }
+
+          if (_state.markers.done_99) {
+            figures[i].annotate_line("x",
+              completion_time(data[i], 0.99, info[i].totalPaths), "99% done");
+          }
         }
       }
     }
@@ -124,6 +143,25 @@ var refresh_view = () => {
           {
             linecolor: colors[1]
           });
+
+      for (var i in [A, B]) {
+        if (_state.markers.start) {
+          figure.annotate_line("x", info[i].initializationTime, "job start",
+            { color: colors[i], opacity: 0.3 });
+        }
+
+        if (_state.markers.done_95) {
+          figure.annotate_line("x",
+            completion_time(data[i], 0.95, info[i].totalPaths), "95% done",
+            { color: colors[i], opacity: 0.3 });
+        }
+
+        if (_state.markers.done_99) {
+          figure.annotate_line("x",
+            completion_time(data[i], 0.99, info[i].totalPaths), "99% done",
+            { color: colors[i], opacity: 0.3 });
+        }
+      }
 
     }
   });
@@ -148,6 +186,9 @@ $(document).ready(() => {
 
   $(".view-state-option").change(function (e) {
     _state.split_view = $("#splitViewCheck").prop('checked');
+    _state.markers.start = $("#showJobStartCheck").prop('checked');
+    _state.markers.done_95 = $("#show95DoneCheck").prop('checked');
+    _state.markers.done_99 = $("#show99DoneCheck").prop('checked');
     refresh_view();
     e.preventDefault();
   });
