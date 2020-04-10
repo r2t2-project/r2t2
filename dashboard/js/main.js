@@ -8,7 +8,13 @@ var _state = {
     start: true,
     done_95: true,
     done_99: true
-  }
+  },
+
+  scenes: [{
+    info: null,
+    summary: null,
+    treelet: null
+  }] 
 };
 
 var completion_time = (data, f, total_paths) => {
@@ -78,7 +84,7 @@ var job_info = {
   },
   baggingDelay: {
     label: "Bagging Delay",
-    format: d => `${d ? d : "&ndash;"} ms`
+    format: d => `${d ? d : "&mdash;"} ms`
   },
   totalUpload: {
     label: "Upload",
@@ -106,7 +112,7 @@ var job_info = {
   },
   estimatedCost: {
     label: "Cost",
-    format: d =>`${d ? "$" + d : "&ndash;"}`
+    format: d =>`${d ? "$" + d : "&mdash;"}`
   }
 };
 
@@ -131,10 +137,10 @@ const range = (start, stop, step = 1) =>
 var refresh_view = () => {
   Promise.all([
     d3.csv("data/example/a/data.csv"),
-    d3.csv("data/example/a/treelet.csv"),
+    d3.csv("data/example/a/data.csv"),
     d3.json("data/example/a/info.json"),
     d3.csv("data/example/b/data.csv"),
-    d3.csv("data/example/b/treelet.csv"),
+    d3.csv("data/example/b/data.csv"),
     d3.json("data/example/b/info.json"),
   ]).then((values) => {
     const [A, B] = [0, 1];
@@ -146,7 +152,7 @@ var refresh_view = () => {
 
     update_jobs_info(info);
 
-    const max_treelet_id = d3.max(treelet[1], d => +d.treeletId);
+    /* const max_treelet_id = d3.max(treelet[1], d => +d.treeletId);
     const max_timestamp = d3.max(treelet[1], d => +d.timestampS);
 
     var treeletIds = range(0, max_treelet_id + 1);
@@ -155,7 +161,7 @@ var refresh_view = () => {
     var figure = new Figure("#plot-top");
     figure.create_axis("x", [0, max_timestamp], "Time (s)", "")
       .create_axis("y", [0, max_treelet_id], "Treelet ID", "")
-      .heatmap("timestampS", "treeletId", treelet[1], d => d.raysEnqueued);
+      .heatmap("timestampS", "treeletId", treelet[1], d => d.raysEnqueued); */
 
     var selected = [
       [metrics(info[A])[_state.primary_plot], metrics(info[A])[_state.secondary_plot]],
