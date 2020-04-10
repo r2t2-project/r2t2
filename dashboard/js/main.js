@@ -60,6 +60,10 @@ var job_info = {
     label: "Memcached",
     format: d => d / 4
   },
+  treeletCount: {
+    label: "Treelets",
+    format: d => d
+  },
   maxDepth: {
     label: "Depth",
     format: d => d
@@ -69,8 +73,12 @@ var job_info = {
     format: d => d
   },
   outputSize: {
-    label: "Size",
+    label: "Dimensions",
     format: d => `${d.x}&times;${d.y}`
+  },
+  baggingDelay: {
+    label: "Bagging Delay",
+    format: d => `${d ? d : "&ndash;"} ms`
   },
   totalUpload: {
     label: "Upload",
@@ -84,7 +92,22 @@ var job_info = {
     label: "Samples",
     format: d => format_bytes(d, 1)
   },
-
+  generationTime: {
+    label: "⏱️ Generation",
+    format: d => `${d.toFixed(2)} s`
+  },
+  initializationTime: {
+    label: "⏱️ Initialization",
+    format: d => `${d.toFixed(2)} s`
+  },
+  tracingTime: {
+    label: "⏱️ Ray Tracing",
+    format: d => `${d.toFixed(2)} s`
+  },
+  estimatedCost: {
+    label: "Cost",
+    format: d =>`${d ? "$" + d : "&ndash;"}`
+  }
 };
 
 var update_jobs_info = (info) => {
