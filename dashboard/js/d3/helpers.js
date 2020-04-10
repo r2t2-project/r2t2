@@ -22,20 +22,34 @@ class Figure {
     this.margin = margin;
   }
 
-  create_axis(type, range, label, format) {
-    var axis = this.axes[type] = d3.scaleLinear().domain(range);
+  create_axis(type, range, label, format,
+    { ticks = null,
+      tick_values = null } = {}) {
+    var scale = this.axes[type] = d3.scaleLinear().domain(range);
 
     if (type == "x" || type == "x2") {
-      axis.range([0, this.width]);
+      scale.range([0, this.width]);
     }
     else {
-      axis.range([this.height, 0]);
+      scale.range([this.height, 0]);
     }
+
+    let type_to_axis = {
+      x: d3.axisBottom,
+      x2: d3.axisTop,
+      y: d3.axisLeft,
+      y2: d3.axisRight
+    };
+
+    let axis = type_to_axis[type](this.axes[type]).tickFormat(d3.format(format));
+
+    if (ticks) axis.ticks(ticks);
+    if (tick_values) axis.tickValues(tick_values);
 
     if (type == "x") {
       this.svg.append("g")
         .attr("transform", `translate(0, ${this.height})`)
-        .call(d3.axisBottom(this.axes.x).tickFormat(d3.format(format)));
+        .call(axis);
 
       // text label for the x axis
       this.svg.append("text")
@@ -45,7 +59,7 @@ class Figure {
     }
     else if (type == "y") {
       this.svg.append("g")
-        .call(d3.axisLeft(this.axes.y).tickFormat(d3.format(format)));
+        .call(axis);
 
       this.svg.append("text")
         .attr("transform", "rotate(-90)")
@@ -61,8 +75,7 @@ class Figure {
     else if (type == "y2") {
       this.svg.append("g")
         .attr("transform", `translate(${this.width}, 0)`)
-        .call(d3.axisRight(this.axes.y2)
-          .tickFormat(d3.format(format)));
+        .call(axis);
 
       this.svg.append("text")
         .attr("transform", "rotate(-90)")
@@ -132,10 +145,29 @@ class Figure {
         .text(`${label}`);
     }
   }
+
+  heatmap(xname, yname, data, fx) {
+    const width = Math.abs(this.axes.x(1) - this.axes.x(0));
+    const height = Math.abs(this.axes.y(1) - this.axes.y(0));
+
+    var colors = d3.scaleLinear()
+      .range(["white", "green"])
+      .domain(d3.extent(data, d => +fx(d)));
+
+    this.svg.selectAll()
+      .data(data.filter(d => +fx(d) > 0), d => `${d[xname]}:${d[yname]}`)
+      .enter()
+      .append("rect")
+      .attr("x", d => this.axes.x(d[xname]) + width)
+      .attr("y", d => this.axes.y(d[yname]) - height)
+      .attr("width", width)
+      .attr("height", height)
+      .style("fill", d => colors(+fx(d)));
+  }
 };
 
 function format_bytes(bytes, decimals = 2) {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return '0 B';
 
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;

@@ -84,7 +84,7 @@ var job_info = {
     label: "Samples",
     format: d => format_bytes(d, 1)
   },
-  
+
 };
 
 var update_jobs_info = (info) => {
@@ -100,20 +100,39 @@ var update_jobs_info = (info) => {
   }
 };
 
+const range = (start, stop, step = 1) =>
+  Array(Math.ceil((stop - start) / step))
+    .fill(start)
+    .map((x, y) => x + y * step);
+
 var refresh_view = () => {
   Promise.all([
     d3.csv("data/example/a/data.csv"),
+    d3.csv("data/example/a/treelet.csv"),
     d3.json("data/example/a/info.json"),
     d3.csv("data/example/b/data.csv"),
+    d3.csv("data/example/b/treelet.csv"),
     d3.json("data/example/b/info.json"),
   ]).then((values) => {
     const [A, B] = [0, 1];
     const colors = ['blue', 'red'];
 
-    var data = [values[0], values[2]];
-    var info = [values[1], values[3]];
+    var data = [values[0], values[3]];
+    var treelet = [values[1], values[4]];
+    var info = [values[2], values[5]];
 
     update_jobs_info(info);
+
+    const max_treelet_id = d3.max(treelet[1], d => +d.treeletId);
+    const max_timestamp = d3.max(treelet[1], d => +d.timestampS);
+
+    var treeletIds = range(0, max_treelet_id + 1);
+    var timestamps = range(0, max_timestamp + 1);
+
+    var figure = new Figure("#plot-top");
+    figure.create_axis("x", [0, max_timestamp], "Time (s)", "")
+      .create_axis("y", [0, max_treelet_id], "Treelet ID", "")
+      .heatmap("timestampS", "treeletId", treelet[1], d => d.raysEnqueued);
 
     var selected = [
       [metrics(info[A])[_state.primary_plot], metrics(info[A])[_state.secondary_plot]],

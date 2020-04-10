@@ -33,11 +33,16 @@
         </button>
 
         <div id="primary-plot-menu" class="dropdown-menu">
+          <h6 class="dropdown-header">AGGREGATE</h6>
           <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
           <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
           <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
           <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
           <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">PER TREELET</h6>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">PER WORKER</h6>
         </div>
 
       </li>
@@ -237,14 +242,15 @@
       </nav>
 
       <main role="main" class="d-flex flex-column ml-sm-auto col-lg-10 px-0">
+        
         <div id="plot-top" class="plot h-50 d-flex justify-content-center align-items-center">
         </div>
 
         <div id="plot-bottom" class="plot h-50 d-flex justify-content-center d-none align-items-center border-top">
         </div>
+
+      </main>
     </div>
-    </main>
-  </div>
   </div>
 
   <script src="js/jquery-3.4.1.slim.min.js"></script>
