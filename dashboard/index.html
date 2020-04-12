@@ -33,14 +33,25 @@
         </button>
 
         <div id="primary-plot-menu" class="dropdown-menu">
-          <h6 class="dropdown-header">AGGREGATE</h6>
-          <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
+          <h6 class="dropdown-header">∑ RAYS</h6>
+          <a class="dropdown-item" href="#" plot-id="paths_finished">Paths Finished</a>
           <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
           <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
-          <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
-          <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">∑ BYTES</h6>
+          <a class="dropdown-item" href="#" plot-id="bag_sizes">Average Bag Size</a>
+          <a class="dropdown-item" href="#" plot-id="bytes_sent">Bytes Sent</a>
+          <a class="dropdown-item" href="#" plot-id="bytes_received">Bytes Received</a>
+          <a class="dropdown-item" href="#" plot-id="bytes_transferred">Bytes Transferred</a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">CPU USAGE</h6>
+          <a class="dropdown-item" href="#" plot-id="cpu_mean">Average CPU Usage</a>
+          <a class="dropdown-item" href="#" plot-id="cpu_median">Median CPU Usage</a>
+          <a class="dropdown-item" href="#" plot-id="cpu_p90">CPU Usage (90-percentile)</a>
+          <a class="dropdown-item" href="#" plot-id="cpu_p95">CPU Usage (95-percentile)</a>
           <div class="dropdown-divider"></div>
           <h6 class="dropdown-header">PER TREELET</h6>
+          <a class="dropdown-item" href="#" plot-id="treelet_rays_traced">Rays Traced</a>
           <div class="dropdown-divider"></div>
           <h6 class="dropdown-header">PER WORKER</h6>
         </div>
@@ -51,17 +62,28 @@
 
         <button id="secondary-plot-title" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          Percent Paths Finished
+          None
         </button>
 
         <div id="secondary-plot-menu" class="dropdown-menu">
           <a class="dropdown-item" plot-id="none" href="#">None</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" plot-id="paths">Percent Paths Finished</a>
+          <h6 class="dropdown-header">∑ RAYS</h6>
+          <a class="dropdown-item" href="#" plot-id="paths_finished">Paths Finished</a>
           <a class="dropdown-item" href="#" plot-id="rays_enqueued">Rays Enqueued</a>
           <a class="dropdown-item" href="#" plot-id="rays_dequeued">Rays Dequeued</a>
-          <a class="dropdown-item" href="#" plot-id="bags">Average Bag Size</a>
-          <a class="dropdown-item" href="#" plot-id="bytes">Bytes Transferred</a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">∑ BYTES</h6>
+          <a class="dropdown-item" href="#" plot-id="bag_sizes">Average Bag Size</a>
+          <a class="dropdown-item" href="#" plot-id="bytes_sent">Bytes Sent</a>
+          <a class="dropdown-item" href="#" plot-id="bytes_received">Bytes Received</a>
+          <a class="dropdown-item" href="#" plot-id="bytes_transferred">Bytes Transferred</a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">CPU USAGE</h6>
+          <a class="dropdown-item" href="#" plot-id="cpu_mean">Average CPU Usage</a>
+          <a class="dropdown-item" href="#" plot-id="cpu_median">Median CPU Usage</a>
+          <a class="dropdown-item" href="#" plot-id="cpu_p90">CPU Usage (90-percentile)</a>
+          <a class="dropdown-item" href="#" plot-id="cpu_p95">CPU Usage (95-percentile)</a>
         </div>
 
       </li>
@@ -133,46 +155,23 @@
           <div class="p-3 border-bottom">
             <h6>Scene <span class="text-primary">A</span></h6>
 
-            <div class="dropdown pb-1">
-              <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                moana-full-nvidia
+            <div class="dropdown pb-1" data-scene="a">
+              <a id="scene-a" class="scene-select-button btn btn-sm btn-primary dropdown-toggle disabled" href="#"
+                role="button" data-toggle="dropdown">
               </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <h6 class="dropdown-header">SCENE</h6>
-                <a class="dropdown-item" href="#">moana-full-nvidia</a>
-                <a class="dropdown-item" href="#">moana-subset-nvidia</a>
-                <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
+
+              <div class="dropdown-menu" aria-labelledby="scene-a">
               </div>
             </div>
 
-            <span class="dropdown pb-1">
-              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                64
+            <div id="dropdown-run-a" class="dropdown pb-1">
+              <a id="run-a" class="btn btn-sm btn-outline-secondary dropdown-toggle disabled" href="#" role="button"
+                data-toggle="dropdown">
               </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
-                <a class="dropdown-item" href="#">1</a>
-                <a class="dropdown-item" href="#">16</a>
-                <a class="dropdown-item" href="#">64</a>
-                <a class="dropdown-item" href="#">128</a>
-              </div>
-            </span>
 
-            <span class="dropdown pb-1">
-              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                400
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <h6 class="dropdown-header">WORKER COUNT</h6>
-                <a class="dropdown-item" href="#">400</a></a>
-                <a class="dropdown-item" href="#">800</a>
-                <a class="dropdown-item" href="#">1200</a>
-                <a class="dropdown-item" href="#">1600</a>
+              <div class="dropdown-menu" aria-labelledby="run-a">
               </div>
-            </span>
+            </div>
 
           </div>
 
@@ -180,50 +179,29 @@
 
             <h6>Scene <span class="text-danger">B</span></h6>
 
-            <div class="dropdown pb-1">
-              <a class="btn btn-sm btn-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                moana-full-nvidia
-              </a><span class="ml-2">
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <h6 class="dropdown-header">SCENE</h6>
-                  <a class="dropdown-item" href="#">moana-full-nvidia</a>
-                  <a class="dropdown-item" href="#">moana-subset-nvidia</a>
-                  <a class="dropdown-item" href="#">killeroo-2000-nvidia</a>
-                </div>
+            <div class="dropdown pb-1" data-scene="b">
+              <a id="scene-b" class="scene-select-button btn btn-sm btn-danger dropdown-toggle disabled" href="#"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="scene-b">
+
+              </div>
             </div>
 
-            <span class="dropdown pb-1">
-              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                64
+            <div id="dropdown-run-b" class="dropdown pb-1">
+              <a id="run-b" class="btn btn-sm btn-outline-secondary dropdown-toggle disabled" href="#" role="button"
+                data-toggle="dropdown">
               </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <h6 class="dropdown-header">SAMPLES PER PIXEL</h6>
-                <a class="dropdown-item" href="#">1</a>
-                <a class="dropdown-item" href="#">16</a>
-                <a class="dropdown-item" href="#">64</a>
-                <a class="dropdown-item" href="#">128</a>
-              </div>
-            </span>
 
-            <span class="dropdown pb-1">
-              <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                400
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <h6 class="dropdown-header">WORKER COUNT</h6>
-                <a class="dropdown-item" href="#">400</a></a>
-                <a class="dropdown-item" href="#">800</a>
-                <a class="dropdown-item" href="#">1200</a>
-                <a class="dropdown-item" href="#">1600</a>
+              <div class="dropdown-menu" aria-labelledby="run-b">
               </div>
-            </span>
+            </div>
 
           </div>
 
-          <div class="p-3">
+          <div id="jobs-info" class="d-none p-3">
 
             <h6>Job Information</h6>
             <table class="table table-bordered table-sm small border-bottom">
@@ -232,7 +210,7 @@
                 <th scope="col" class="text-primary">A</th>
                 <th scope="col" class="text-danger">B</th>
               </thead>
-              <tbody id="jobsInfoTableBody">
+              <tbody>
               </tbody>
             </table>
 
@@ -242,7 +220,7 @@
       </nav>
 
       <main role="main" class="d-flex flex-column ml-sm-auto col-lg-10 px-0">
-        
+
         <div id="plot-top" class="plot h-50 d-flex justify-content-center align-items-center">
         </div>
 
@@ -253,7 +231,7 @@
     </div>
   </div>
 
-  <script src="js/jquery-3.4.1.slim.min.js"></script>
+  <script src="js/jquery-3.5.0.min.js"></script>
   <script src="js/popper.min.js"></script>
   <script src="js/bootstrap/bootstrap.min.js"></script>
 

@@ -146,12 +146,12 @@ class Figure {
     }
   }
 
-  heatmap(xname, yname, data, fx) {
+  heatmap(xname, yname, data, fx, { color_start = "white", color_end = "green" } = {}) {
     const width = Math.abs(this.axes.x(1) - this.axes.x(0));
     const height = Math.abs(this.axes.y(1) - this.axes.y(0));
 
     var colors = d3.scaleLinear()
-      .range(["white", "green"])
+      .range([color_start, color_end])
       .domain(d3.extent(data, d => +fx(d)));
 
     this.svg.selectAll()
