@@ -144,6 +144,28 @@ class Figure {
         .style("text-anchor", "start")
         .text(`${label}`);
     }
+    else if (axis == "y") {
+      this.svg.append("line")
+        .attr("stroke", color)
+        .attr('stroke-width', 1.0)
+        .attr('stroke-opacity', opacity)
+        .attr("stroke-dasharray", ("2,4"))
+        .attr("x1", 0)
+        .attr("x2", this.width)
+        .attr("y1", actual)
+        .attr("y2", actual);
+
+      this.svg.append("text")
+        .attr("y", actual)
+        .attr("x", 0)
+        .attr("dy", "-0.4em")
+        .attr("dx", "0.5em")
+        .attr("fill", color)
+        .attr("fill-opacity", opacity)
+        .attr("font-size", "0.6rem")
+        .style("text-anchor", "start")
+        .text(`${label}`);
+    }
   }
 
   heatmap(xname, yname, data, fx, { color_start = "white", color_end = "green" } = {}) {

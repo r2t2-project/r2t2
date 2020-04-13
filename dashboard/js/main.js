@@ -8,7 +8,8 @@ var _state = {
   markers: {
     start: true,
     done_95: true,
-    done_99: true
+    done_99: true,
+    max_bandwidth: false
   },
 
   scene_list: null,
@@ -342,6 +343,11 @@ var update_graphs = () => {
     return;
   }
 
+  const max_bandwidth = [
+    (info[0] ? info[0].numLambdas * 50 * 1024 * 1024 : 0),
+    (info[1] ? info[1].numLambdas * 50 * 1024 * 1024 : 0)
+  ];
+
   if (_state.primary_plot.startsWith("treelet_")) {
     $("#plot-top").removeClass("h-50 h-100").addClass("h-50").html("");
     $("#plot-bottom").removeClass("h-50 h-0").addClass("h-50").html("");
@@ -394,6 +400,8 @@ var update_graphs = () => {
   var yrange = [Infinity, 0];
   var y2range = [Infinity, 0];
 
+  var bandwidth_graph = _state.primary_plot === "bytes_transferred";
+
   for (var i in [0, 1]) {
     if (!data[i]) {
       continue;
@@ -407,6 +415,10 @@ var update_graphs = () => {
 
     yrange[0] = Math.min(yrange[0], d3.min(data[i], d => +primary_metric.func(d)));
     yrange[1] = Math.max(yrange[1], d3.max(data[i], d => +primary_metric.func(d)));
+
+    if (bandwidth_graph && _state.markers.max_bandwidth) {
+      yrange[1] = Math.max(max_bandwidth[i], yrange[1]);
+    }
 
     if (secondary_metric) {
       y2range[0] = Math.min(y2range[0], d3.min(data[i], d => +secondary_metric.func(d)));
@@ -463,6 +475,10 @@ var update_graphs = () => {
         figures[i].annotate_line("x",
           completion_time(data[i], 0.99, info[i].totalPaths), "99% done");
       }
+
+      if (_state.markers.max_bandwidth) {
+        figures[i].annotate_line("y", max_bandwidth[i], "max bandwidth");
+      }
     }
   }
   else {
@@ -515,6 +531,11 @@ var update_graphs = () => {
           completion_time(data[i], 0.99, info[i].totalPaths), "99% done",
           { color: colors[i], opacity: 0.3 });
       }
+
+      if (_state.markers.max_bandwidth) {
+        figure.annotate_line("y", max_bandwidth[i], "max bandwidth",
+          { color: colors[i], opacity: 0.3 });
+      }
     }
   }
 };
@@ -557,6 +578,7 @@ $(document).ready(() => {
     _state.markers.start = $("#showJobStartCheck").prop('checked');
     _state.markers.done_95 = $("#show95DoneCheck").prop('checked');
     _state.markers.done_99 = $("#show99DoneCheck").prop('checked');
+    _state.markers.max_bandwidth = $("#show-max-bandwidth").prop('checked');
     update_view();
     e.preventDefault();
   });
