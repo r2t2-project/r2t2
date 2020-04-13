@@ -27,8 +27,6 @@ body {
   top: 0;
   height: calc(100vh);
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
 @supports ((position: -webkit-sticky) or (position: sticky)) {
