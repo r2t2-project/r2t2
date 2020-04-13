@@ -140,7 +140,7 @@ class Figure {
         .attr("dx", "0.5em")
         .attr("fill", color)
         .attr("fill-opacity", opacity)
-        .attr("font-size", "0.6rem")
+        .attr("font-size", "0.8rem")
         .style("text-anchor", "start")
         .text(`${label}`);
     }
@@ -162,7 +162,7 @@ class Figure {
         .attr("dx", "0.5em")
         .attr("fill", color)
         .attr("fill-opacity", opacity)
-        .attr("font-size", "0.6rem")
+        .attr("font-size", "0.8rem")
         .style("text-anchor", "start")
         .text(`${label}`);
     }

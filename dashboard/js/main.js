@@ -10,6 +10,7 @@ var _state = {
     start: true,
     done_95: true,
     done_99: true,
+    done_100: true,
     max_bandwidth: false
   },
 
@@ -382,17 +383,22 @@ var update_graphs = () => {
 
       if (_state.markers.start) {
         figures[i].annotate_line("x",
-          _state.ignore_initialization ? 0 : info[i].initializationTime, "job start");
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "start");
       }
 
       if (_state.markers.done_95) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.95, info[i]), "95% done");
+          completion_time(data[i], 0.95, info[i]), "95%");
       }
 
       if (_state.markers.done_99) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.99, info[i]), "99% done");
+          completion_time(data[i], 0.99, info[i]), "99%");
+      }
+
+      if (_state.markers.done_100) {
+        figures[i].annotate_line("x",
+          completion_time(data[i], 1.00, info[i]), "100%");
       }
     }
 
@@ -477,17 +483,22 @@ var update_graphs = () => {
 
       if (_state.markers.start) {
         figures[i].annotate_line("x",
-          _state.ignore_initialization ? 0 : info[i].initializationTime, "job start");
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "start");
       }
 
       if (_state.markers.done_95) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.95, info[i]), "95% done");
+          completion_time(data[i], 0.95, info[i]), "95%");
       }
 
       if (_state.markers.done_99) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.99, info[i]), "99% done");
+          completion_time(data[i], 0.99, info[i]), "99%");
+      }
+
+      if (_state.markers.done_100) {
+        figures[i].annotate_line("x",
+          completion_time(data[i], 1.00, info[i]), "100%");
       }
 
       if (_state.markers.max_bandwidth) {
@@ -539,19 +550,25 @@ var update_graphs = () => {
 
       if (_state.markers.start) {
         figure.annotate_line("x",
-          _state.ignore_initialization ? 0 : info[i].initializationTime, "job start",
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "start",
           { color: colors[i], opacity: 0.3 });
       }
 
       if (_state.markers.done_95) {
         figure.annotate_line("x",
-          completion_time(data[i], 0.95, info[i]), "95% done",
+          completion_time(data[i], 0.95, info[i]), "95%",
           { color: colors[i], opacity: 0.3 });
       }
 
       if (_state.markers.done_99) {
         figure.annotate_line("x",
-          completion_time(data[i], 0.99, info[i]), "99% done",
+          completion_time(data[i], 0.99, info[i]), "99%",
+          { color: colors[i], opacity: 0.3 });
+      }
+
+      if (_state.markers.done_100) {
+        figure.annotate_line("x",
+          completion_time(data[i], 1.00, info[i]), "100%",
           { color: colors[i], opacity: 0.3 });
       }
 
@@ -603,7 +620,9 @@ $(document).ready(() => {
     _state.markers.start = $("#showJobStartCheck").prop('checked');
     _state.markers.done_95 = $("#show95DoneCheck").prop('checked');
     _state.markers.done_99 = $("#show99DoneCheck").prop('checked');
+    _state.markers.done_100 = $("#show100DoneCheck").prop('checked');
     _state.markers.max_bandwidth = $("#show-max-bandwidth").prop('checked');
+
     update_view();
     e.preventDefault();
   });
