@@ -4,6 +4,7 @@ var _state = {
   primary_plot: "rays_enqueued",
   secondary_plot: "none",
   split_view: true,
+  ignore_initialization: false,
 
   markers: {
     start: true,
@@ -177,9 +178,10 @@ var update_view = () => {
     });
 };
 
-var completion_time = (data, f, total_paths) => {
+var completion_time = (data, f, info) => {
   return d3.bisector(d => +d.runningCompletion)
-    .right(data, f * total_paths);
+    .right(data, f * info.totalPaths)
+    - (_state.ignore_initialization ? Math.floor(info.initializationTime) : 0);
 };
 
 var metrics = (info) => {
@@ -379,17 +381,18 @@ var update_graphs = () => {
           { color_start: "#eeeeee", color_end: colors[i] });
 
       if (_state.markers.start) {
-        figures[i].annotate_line("x", info[i].initializationTime, "job start");
+        figures[i].annotate_line("x",
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "job start");
       }
 
       if (_state.markers.done_95) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.95, info[i].totalPaths), "95% done");
+          completion_time(data[i], 0.95, info[i]), "95% done");
       }
 
       if (_state.markers.done_99) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.99, info[i].totalPaths), "99% done");
+          completion_time(data[i], 0.99, info[i]), "99% done");
       }
     }
 
@@ -410,8 +413,12 @@ var update_graphs = () => {
     let primary_metric = metrics(info[i])[_state.primary_plot];
     let secondary_metric = metrics(info[i])[_state.secondary_plot];
 
-    xrange[0] = Math.min(xrange[0], d3.min(data[i], d => +d.timestampS));
-    xrange[1] = Math.max(xrange[1], d3.max(data[i], d => +d.timestampS));
+    let time_f = _state.ignore_initialization
+      ? (d => d.timestampS - Math.floor(info[i].initializationTime))
+      : (d => d.timestampS);
+
+    xrange[0] = Math.min(xrange[0], d3.min(data[i], d => +time_f(d)));
+    xrange[1] = Math.max(xrange[1], d3.max(data[i], d => +time_f(d)));
 
     yrange[0] = Math.min(yrange[0], d3.min(data[i], d => +primary_metric.func(d)));
     yrange[1] = Math.max(yrange[1], d3.max(data[i], d => +primary_metric.func(d)));
@@ -425,6 +432,8 @@ var update_graphs = () => {
       y2range[1] = Math.max(y2range[1], d3.max(data[i], d => +secondary_metric.func(d)));
     }
   }
+
+  xrange[0] = Math.max(xrange[0], 0);
 
   if (_state.split_view) {
     $("#plot-top").removeClass("h-50 h-100").addClass("h-50").html("");
@@ -442,10 +451,14 @@ var update_graphs = () => {
       let primary_metric = metrics(info[i])[_state.primary_plot];
       let secondary_metric = metrics(info[i])[_state.secondary_plot];
 
+      let time_f = _state.ignore_initialization
+        ? (d => d.timestampS - Math.floor(info[i].initializationTime))
+        : (d => d.timestampS);
+
       figures[i]
         .create_axis("x", xrange, "Time (s)", "")
         .create_axis("y", yrange, primary_metric.label, primary_metric.format)
-        .path(data[i], d => d.timestampS, primary_metric.func,
+        .path(data[i], time_f, primary_metric.func,
           {
             linecolor: colors[i]
           });
@@ -453,7 +466,7 @@ var update_graphs = () => {
       if (secondary_metric) {
         figures[i]
           .create_axis("y2", y2range, secondary_metric.label, secondary_metric.format)
-          .path(data[i], d => d.timestampS, secondary_metric.func,
+          .path(data[i], time_f, secondary_metric.func,
             {
               y: 'y2',
               linecolor: 'gray',
@@ -463,17 +476,18 @@ var update_graphs = () => {
       }
 
       if (_state.markers.start) {
-        figures[i].annotate_line("x", info[i].initializationTime, "job start");
+        figures[i].annotate_line("x",
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "job start");
       }
 
       if (_state.markers.done_95) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.95, info[i].totalPaths), "95% done");
+          completion_time(data[i], 0.95, info[i]), "95% done");
       }
 
       if (_state.markers.done_99) {
         figures[i].annotate_line("x",
-          completion_time(data[i], 0.99, info[i].totalPaths), "99% done");
+          completion_time(data[i], 0.99, info[i]), "99% done");
       }
 
       if (_state.markers.max_bandwidth) {
@@ -497,14 +511,22 @@ var update_graphs = () => {
       .create_axis("y", yrange, label, format);
 
     if (data[0]) {
-      figure.path(data[0], d => d.timestampS, metrics(info[0])[_state.primary_plot].func,
+      let time_f = _state.ignore_initialization
+        ? (d => d.timestampS - Math.floor(info[0].initializationTime))
+        : (d => d.timestampS);
+
+      figure.path(data[0], time_f, metrics(info[0])[_state.primary_plot].func,
         {
           linecolor: colors[0]
         });
     }
 
     if (data[1]) {
-      figure.path(data[1], d => d.timestampS, metrics(info[1])[_state.primary_plot].func,
+      let time_f = _state.ignore_initialization
+        ? (d => d.timestampS - Math.floor(info[1].initializationTime))
+        : (d => d.timestampS);
+
+      figure.path(data[1], time_f, metrics(info[1])[_state.primary_plot].func,
         {
           linecolor: colors[1]
         });
@@ -516,19 +538,20 @@ var update_graphs = () => {
       }
 
       if (_state.markers.start) {
-        figure.annotate_line("x", info[i].initializationTime, "job start",
+        figure.annotate_line("x",
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "job start",
           { color: colors[i], opacity: 0.3 });
       }
 
       if (_state.markers.done_95) {
         figure.annotate_line("x",
-          completion_time(data[i], 0.95, info[i].totalPaths), "95% done",
+          completion_time(data[i], 0.95, info[i]), "95% done",
           { color: colors[i], opacity: 0.3 });
       }
 
       if (_state.markers.done_99) {
         figure.annotate_line("x",
-          completion_time(data[i], 0.99, info[i].totalPaths), "99% done",
+          completion_time(data[i], 0.99, info[i]), "99% done",
           { color: colors[i], opacity: 0.3 });
       }
 
@@ -575,6 +598,8 @@ $(document).ready(() => {
 
   $(".view-state-option").change(function (e) {
     _state.split_view = $("#splitViewCheck").prop('checked');
+    _state.ignore_initialization = $("#ignore-initialization-check").prop('checked');
+
     _state.markers.start = $("#showJobStartCheck").prop('checked');
     _state.markers.done_95 = $("#show95DoneCheck").prop('checked');
     _state.markers.done_99 = $("#show99DoneCheck").prop('checked');
