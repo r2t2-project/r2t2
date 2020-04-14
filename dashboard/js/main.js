@@ -538,7 +538,7 @@ var update_graphs = () => {
       for (var treelet in info[i].allocation) {
         let worker_count = info[i].allocation[treelet];
 
-        if (worker_count > 4) {
+        if (worker_count >= 4) {
           figures[i].marker([alloc_x, current_w], [alloc_x, current_w + worker_count],
             `T${treelet} (${worker_count})`, { color: '#218a3d' });
         }

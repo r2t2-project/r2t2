@@ -209,7 +209,7 @@ class Figure {
       .attr("dy", "0.5ex")
       .attr("fill", color)
       .attr("fill-opacity", opacity)
-      .attr("font-size", "0.7rem")
+      .attr("font-size", "0.6rem")
       .style("text-anchor", "end")
       .text(`${label}`);
   }
