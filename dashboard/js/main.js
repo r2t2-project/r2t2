@@ -21,14 +21,16 @@ var _state = {
     run: null,
     info: null,
     data: null,
-    treelets: null
+    treelets: null,
+    workers: null
   },
   {
     name: null,
     run: null,
     info: null,
     data: null,
-    treelets: null
+    treelets: null,
+    workers: null
   }]
 };
 
@@ -86,6 +88,7 @@ var update_view = () => {
         _state.scenes[i].run
           = _state.scenes[i].info
           = _state.scenes[i].treelet
+          = _state.scenes[i].worker
           = _state.scenes[i].data = null;
 
         $.ajax(new URL(`${scene_name}/runs.json`, base_url).href, { dataType: "json" })
@@ -120,8 +123,13 @@ var update_view = () => {
           e.preventDefault();
 
           let clicked = $(this);
-          let run_name = _state.scenes[i].run = clicked.attr('data-run');
-          _state.scenes[i].info = _state.scenes[i].treelet = _state.scenes[i].data = null;
+
+          _state.scenes[i].run = clicked.attr('data-run');
+          _state.scenes[i].info
+            = _state.scenes[i].treelet
+            = _state.scenes[i].worker
+            = _state.scenes[i].data = null;
+
           update_view();
         });
       } else {
@@ -164,6 +172,12 @@ var update_view = () => {
     } else {
       things_to_load.push(null);
     }
+
+    if (k.treelet === null && _state.primary_plot.startsWith("worker_")) {
+      things_to_load.push(d3.csv(new URL(`${k.name}/${k.run}/worker.csv`, base_url).href));
+    } else {
+      things_to_load.push(null);
+    }
   }
 
   Promise.all(things_to_load)
@@ -171,9 +185,11 @@ var update_view = () => {
       if (values[0]) _state.scenes[0].info = values[0];
       if (values[1]) _state.scenes[0].data = values[1];
       if (values[2]) _state.scenes[0].treelet = values[2];
-      if (values[3]) _state.scenes[1].info = values[3];
-      if (values[4]) _state.scenes[1].data = values[4];
-      if (values[5]) _state.scenes[1].treelet = values[5];
+      if (values[3]) _state.scenes[0].worker = values[3];
+      if (values[4]) _state.scenes[1].info = values[4];
+      if (values[5]) _state.scenes[1].data = values[5];
+      if (values[6]) _state.scenes[1].treelet = values[6];
+      if (values[7]) _state.scenes[1].worker = values[7];
 
       update_graphs();
     });
@@ -339,6 +355,7 @@ var update_graphs = () => {
   var data = [_state.scenes[0].data, _state.scenes[1].data];
   var info = [_state.scenes[0].info, _state.scenes[1].info];
   var treelet = [_state.scenes[0].treelet, _state.scenes[1].treelet];
+  var worker = [_state.scenes[0].worker, _state.scenes[1].worker];
 
   update_jobs_info(info);
 
@@ -391,7 +408,83 @@ var update_graphs = () => {
 
       if (secondary_metric) {
         figures[i]
-          .create_axis("y2", d3.extent(data[i], d => +secondary_metric.func(d)), secondary_metric.label, secondary_metric.format)
+          .create_axis("y2", d3.extent(data[i], d => +secondary_metric.func(d)),
+            secondary_metric.label, secondary_metric.format)
+          .path(data[i], d => d.timestampS, secondary_metric.func,
+            {
+              y: 'y2',
+              linecolor: 'gray',
+              width: 2.5,
+              dasharray: ("3, 3")
+            });
+      }
+
+      if (_state.markers.start) {
+        figures[i].annotate_line("x",
+          _state.ignore_initialization ? 0 : info[i].initializationTime, "start");
+      }
+
+      if (_state.markers.done_95) {
+        figures[i].annotate_line("x",
+          completion_time(data[i], 0.95, info[i]), "95%");
+      }
+
+      if (_state.markers.done_99) {
+        figures[i].annotate_line("x",
+          completion_time(data[i], 0.99, info[i]), "99%");
+      }
+
+      if (_state.markers.done_100) {
+        figures[i].annotate_line("x",
+          completion_time(data[i], 1.00, info[i]), "100%");
+      }
+    }
+
+    return;
+  }
+
+  if (_state.primary_plot.startsWith("worker_")) {
+    if (_state.split_view) {
+      $("#plot-top").removeClass("h-50 h-100").addClass("h-50").html("");
+      $("#plot-bottom").removeClass("h-50 h-0").addClass("h-50").html("");
+    }
+    else {
+      $("#plot-top").removeClass("h-50 h-100").addClass("h-100").html("");
+      $("#plot-bottom").removeClass("h-50 h-0").addClass("h-0").html("");
+    }
+
+    var figures = [
+      new Figure("#plot-top"),
+      _state.split_view ? new Figure("#plot-bottom") : null];
+
+    let max_worker_id = 0;
+    let max_timestamp = 0;
+
+    for (var i in [0, 1]) {
+      if (!worker[i]) {
+        continue;
+      }
+
+      max_worker_id = Math.max(max_worker_id, d3.max(worker[i], d => +d.tempWorkerId));
+      max_timestamp = Math.max(max_timestamp, d3.max(worker[i], d => +d.timestampS));
+    }
+
+    for (var i in (_state.split_view ? [0, 1] : [0])) {
+      if (!worker[i]) {
+        continue;
+      }
+
+      figures[i].create_axis("x", [0, max_timestamp], "Time (s)", "")
+        .create_axis("y", [0, max_worker_id], "Worker ID", "")
+        .heatmap("timestampS", "tempWorkerId", worker[i], d => d.raysDequeued,
+          { color_start: "#eeeeee", color_end: colors[i] });
+
+      let secondary_metric = metrics(info[i])[_state.secondary_plot];
+
+      if (secondary_metric) {
+        figures[i]
+          .create_axis("y2", d3.extent(data[i], d => +secondary_metric.func(d)),
+            secondary_metric.label, secondary_metric.format)
           .path(data[i], d => d.timestampS, secondary_metric.func,
             {
               y: 'y2',
