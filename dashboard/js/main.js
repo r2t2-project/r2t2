@@ -352,12 +352,18 @@ var update_graphs = () => {
   ];
 
   if (_state.primary_plot.startsWith("treelet_")) {
-    $("#plot-top").removeClass("h-50 h-100").addClass("h-50").html("");
-    $("#plot-bottom").removeClass("h-50 h-0").addClass("h-50").html("");
+    if (_state.split_view) {
+      $("#plot-top").removeClass("h-50 h-100").addClass("h-50").html("");
+      $("#plot-bottom").removeClass("h-50 h-0").addClass("h-50").html("");
+    }
+    else {
+      $("#plot-top").removeClass("h-50 h-100").addClass("h-100").html("");
+      $("#plot-bottom").removeClass("h-50 h-0").addClass("h-0").html("");
+    }
 
     var figures = [
       new Figure("#plot-top"),
-      new Figure("#plot-bottom")];
+      _state.split_view ? new Figure("#plot-bottom") : null];
 
     let max_treelet_id = 0;
     let max_timestamp = 0;
@@ -371,7 +377,7 @@ var update_graphs = () => {
       max_timestamp = Math.max(max_timestamp, d3.max(treelet[i], d => +d.timestampS));
     }
 
-    for (var i in [0, 1]) {
+    for (var i in (_state.split_view ? [0, 1] : [0])) {
       if (!treelet[i]) {
         continue;
       }
@@ -380,6 +386,20 @@ var update_graphs = () => {
         .create_axis("y", [0, max_treelet_id], "Treelet ID", "")
         .heatmap("timestampS", "treeletId", treelet[i], d => d.raysDequeued,
           { color_start: "#eeeeee", color_end: colors[i] });
+
+      let secondary_metric = metrics(info[i])[_state.secondary_plot];
+
+      if (secondary_metric) {
+        figures[i]
+          .create_axis("y2", d3.extent(data[i], d => +secondary_metric.func(d)), secondary_metric.label, secondary_metric.format)
+          .path(data[i], d => d.timestampS, secondary_metric.func,
+            {
+              y: 'y2',
+              linecolor: 'gray',
+              width: 2.5,
+              dasharray: ("3, 3")
+            });
+      }
 
       if (_state.markers.start) {
         figures[i].annotate_line("x",
