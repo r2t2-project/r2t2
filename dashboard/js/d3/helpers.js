@@ -180,7 +180,7 @@ class Figure {
       .data(data.filter(d => +fx(d) > 0), d => `${d[xname]}:${d[yname]}`)
       .enter()
       .append("rect")
-      .attr("x", d => this.axes.x(d[xname]) + width)
+      .attr("x", d => this.axes.x(d[xname]) + width / 2)
       .attr("y", d => this.axes.y(d[yname]) - height)
       .attr("width", width)
       .attr("height", height)
