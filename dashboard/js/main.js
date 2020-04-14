@@ -513,6 +513,20 @@ var update_graphs = () => {
         figures[i].annotate_line("x",
           completion_time(data[i], 1.00, info[i]), "100%");
       }
+
+      /* plotting allocations */
+      let alloc_x = info[i].initializationTime - 1;
+      let current_w = 0;
+      for (var treelet in info[i].allocation) {
+        let worker_count = info[i].allocation[treelet];
+
+        if (worker_count > 4) {
+          figures[i].marker([alloc_x, current_w], [alloc_x, current_w + worker_count],
+            `T${treelet} (${worker_count})`, { color: '#218a3d' });
+        }
+
+        current_w += worker_count;
+      }
     }
 
     return;

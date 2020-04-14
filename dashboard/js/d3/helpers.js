@@ -168,6 +168,52 @@ class Figure {
     }
   }
 
+  marker(from, to, label, { color = "#999999", opacity = 1.0 } = {}) {
+    let from_actual = [this.axes.x(from[0]), this.axes.y(from[1])];
+    let to_actual = [this.axes.x(to[0]), this.axes.y(to[1])];
+    let label_loc = [
+      (from_actual[0] + to_actual[0]) / 2,
+      (from_actual[1] + to_actual[1]) / 2];
+
+    this.svg.append("line")
+      .attr("stroke", color)
+      .attr('stroke-width', 1.0)
+      .attr('stroke-opacity', opacity)
+      .attr("x1", from_actual[0])
+      .attr("x2", to_actual[0])
+      .attr("y1", from_actual[1])
+      .attr("y2", to_actual[1]);
+
+    this.svg.append("line")
+      .attr("stroke", color)
+      .attr('stroke-width', 1.0)
+      .attr('stroke-opacity', opacity)
+      .attr("x1", to_actual[0] - 3)
+      .attr("x2", to_actual[0] + 3)
+      .attr("y1", to_actual[1])
+      .attr("y2", to_actual[1]);
+
+    this.svg.append("line")
+      .attr("stroke", color)
+      .attr('stroke-width', 1.0)
+      .attr('stroke-opacity', opacity)
+      .attr("x1", from_actual[0] - 3)
+      .attr("x2", from_actual[0] + 3)
+      .attr("y1", from_actual[1])
+      .attr("y2", from_actual[1]);
+
+    this.svg.append("text")
+      .attr("y", label_loc[1])
+      .attr("x", label_loc[0])
+      .attr("dx", "-0.5em")
+      .attr("dy", "0.5ex")
+      .attr("fill", color)
+      .attr("fill-opacity", opacity)
+      .attr("font-size", "0.7rem")
+      .style("text-anchor", "end")
+      .text(`${label}`);
+  }
+
   heatmap(xname, yname, data, fx, { color_start = "white", color_end = "green" } = {}) {
     const width = Math.abs(this.axes.x(1) - this.axes.x(0));
     const height = Math.abs(this.axes.y(1) - this.axes.y(0));
