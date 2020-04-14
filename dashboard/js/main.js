@@ -93,6 +93,24 @@ var update_view = () => {
 
         $.ajax(new URL(`${scene_name}/runs.json`, base_url).href, { dataType: "json" })
           .done(data => {
+            data['runs'].sort((l, r) => {
+              let L = l.name.split("_");
+              let R = r.name.split("_");
+
+              for (let i = 0; i < L.length && i < R.length; i++) {
+                L[i] = +L[i].replace(/\D/g,'');
+                R[i] = +R[i].replace(/\D/g,'');
+
+                if (L[i] < R[i]) {
+                  return -1;
+                } else if (L[i] > R[i]) {
+                  return 1;
+                }
+              }
+
+              return 0;
+            });
+
             _state.scene_list[scene_name] = data['runs'];
             update_view();
           })
@@ -714,6 +732,8 @@ $(document).ready(() => {
   $.ajax(new URL('scenes.json', base_url).href, { dataType: "json" })
     .done(data => {
       _state.scene_list = {};
+
+      data['scenes'].sort();
 
       for (let i in data['scenes']) {
         _state.scene_list[data['scenes'][i]] = null;
