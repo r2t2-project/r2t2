@@ -98,8 +98,8 @@ var update_view = () => {
               let R = r.name.split("_");
 
               for (let i = 0; i < L.length && i < R.length; i++) {
-                L[i] = +L[i].replace(/\D/g,'');
-                R[i] = +R[i].replace(/\D/g,'');
+                L[i] = +L[i].replace(/\D/g, '');
+                R[i] = +R[i].replace(/\D/g, '');
 
                 if (L[i] < R[i]) {
                   return -1;
@@ -221,6 +221,11 @@ var completion_time = (data, f, info) => {
 
 var metrics = (info) => {
   return {
+    active_workers: {
+      label: "Active Workers",
+      func: (d) => (d.workerId_nunique ? d.workerId_nunique : +info.numLambdas),
+      format: "d"
+    },
     paths_finished: {
       label: "Paths Finished (%)",
       func: (d) => (100 * d.runningCompletion / +info.totalPaths),
