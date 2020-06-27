@@ -343,8 +343,8 @@ var job_info = {
     format: d => `${d.toFixed(2)} s`
   },
   estimatedCost: {
-    label: "Cost",
-    format: d => `${d ? "$" + d : "&mdash;"}`
+    label: "CPU-seconds",
+    format: d => `${d ? d.toFixed(2) : "&mdash;"}`
   }
 };
 
