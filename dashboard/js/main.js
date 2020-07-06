@@ -296,7 +296,7 @@ var job_info = {
   },
   memcachedServers: {
     label: "Memcached",
-    format: d => d / 4
+    format: d => d
   },
   treeletCount: {
     label: "Treelets",
@@ -341,10 +341,6 @@ var job_info = {
   tracingTime: {
     label: "⏱️ Ray Tracing",
     format: d => `${d.toFixed(2)} s`
-  },
-  estimatedCost: {
-    label: "CPU-seconds",
-    format: d => `${d ? d.toFixed(2) : "&mdash;"}`
   }
 };
 
@@ -364,6 +360,38 @@ var update_jobs_info = (info) => {
         <td>${info[0] ? job_info[property].format(info[0][property]) : ""}</td>
         <td>${info[1] ? job_info[property].format(info[1][property]) : ""}</td>
       </tr>`);
+  }
+
+  if (info[0] && info[1] && info[0].estimatedCost && info[1].estimatedCost) {
+    let rt_cost_0 = info[0].estimatedCost
+      - info[0].initializationTime * info[0].numLambdas
+      - info[0].generationTime * info[0].numGenerators;
+
+    let rt_cost_1 = info[1].estimatedCost
+      - info[1].initializationTime * info[1].numLambdas
+      - info[1].generationTime * info[1].numGenerators;
+
+    let rt_time_0 = info[0].tracingTime;
+    let rt_time_1 = info[1].tracingTime;
+
+    let cost_change = (100.0 * (rt_cost_1 - rt_cost_0) / rt_cost_0).toFixed(1);
+    let time_change = (100.0 * (rt_time_1 - rt_time_0) / rt_time_0).toFixed(1);
+
+    $("#jobs-info table tbody").append(`
+      <tr>
+        <th scope="row" colspan="2"></th>
+        <td>${time_change > 0 ? "🔺" : "🔻"} ${time_change}%</td>
+      </tr>
+      <tr>
+        <th scope="row">RT CPU-seconds</th>
+        <td>${rt_cost_0.toFixed(0)}</td>
+        <td>${rt_cost_1.toFixed(0)}</td>
+      </tr>
+      <tr>
+        <th scope="row" colspan="2"></th>
+        <td>${cost_change > 0 ? "🔺" : "🔻"} ${cost_change}%</td>
+      </tr>
+      `);
   }
 };
 
