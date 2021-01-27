@@ -26,8 +26,11 @@ void LambdaWorker::send_worker_stats()
                        + diff.guest_nice;
 
   WorkerStats stats;
+  stats.bytes_downloaded = bytes_download_from_s3.load();
   stats.finished_paths = finished_path_ids.size();
   stats.cpu_usage = 1.0 * work_jiffies / total_jiffies;
+
+  bytes_download_from_s3 = 0;
 
   protobuf::WorkerStats proto = to_protobuf( stats );
   master_connection.push_request(

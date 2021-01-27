@@ -240,11 +240,12 @@ LambdaMaster::LambdaMaster( const uint16_t listen_port,
     alloc_stream.open( config.logs_directory / "allocations.csv", ios::trunc );
     summary_stream.open( config.logs_directory / "summary.csv", ios::trunc );
 
-    ws_stream << "timestamp,workerId,pathsFinished,"
-                 "raysEnqueued,raysAssigned,raysDequeued,"
-                 "bytesEnqueued,bytesAssigned,bytesDequeued,"
-                 "bagsEnqueued,bagsAssigned,bagsDequeued,"
-                 "numSamples,bytesSamples,bagsSamples,cpuUsage\n";
+    ws_stream
+      << "timestamp,workerId,pathsFinished,"
+         "raysEnqueued,raysAssigned,raysDequeued,"
+         "bytesEnqueued,bytesAssigned,bytesDequeued,"
+         "bagsEnqueued,bagsAssigned,bagsDequeued,"
+         "numSamples,bytesSamples,bagsSamples,cpuUsage,bytesDownloaded\n";
 
     tl_stream << "timestamp,treeletId,raysEnqueued,raysDequeued,"
                  "bytesEnqueued,bytesDequeued,bagsEnqueued,bagsDequeued,"
@@ -619,8 +620,8 @@ void LambdaMaster::run()
   }
 
   if ( !get_requests.empty() ) {
-    cout << "\n\u2198 Downloading " << get_requests.size()
-         << " log file(s)... " << flush;
+    cout << "\n\u2198 Downloading " << get_requests.size() << " log file(s)... "
+         << flush;
     this_thread::sleep_for( 10s );
     job_storage_backend.get( get_requests );
     cout << "done." << endl;

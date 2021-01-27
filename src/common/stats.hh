@@ -36,6 +36,7 @@ struct WorkerStats
 {
   uint64_t finished_paths { 0 };
   double cpu_usage { 0.0 };
+  uint64_t bytes_downloaded { 0 };
 
   struct
   {

@@ -31,6 +31,7 @@ WorkerStats WorkerStats::operator-( const WorkerStats& other ) const
 {
   WorkerStats res;
 
+  res.bytes_downloaded = bytes_downloaded;
   res.finished_paths = finished_paths - other.finished_paths;
   res.cpu_usage = cpu_usage;
   res.enqueued.rays = enqueued.rays - other.enqueued.rays;

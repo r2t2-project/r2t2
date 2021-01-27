@@ -19,10 +19,12 @@ S3TransferAgent::S3Config::S3Config( const S3StorageBackend& backend )
 
 S3TransferAgent::S3TransferAgent( const S3StorageBackend& backend,
                                   const size_t thread_count /* NOT USED? */,
-                                  const bool upload_as_public )
+                                  const bool upload_as_public,
+                                  std::atomic<uint64_t>* byte_counter )
   : TransferAgent()
   , _client_config( backend )
   , _upload_as_public( upload_as_public )
+  , _byte_counter( byte_counter )
 {
   _thread_count = thread_count;
 
@@ -157,6 +159,10 @@ void S3TransferAgent::worker_thread( const size_t thread_id )
           connection_okay = false;
           s3.close();
           break;
+        }
+
+        if ( _byte_counter != nullptr ) {
+          _byte_counter->operator+=( read_count );
         }
 
         parser->parse( buffer_span.substr( 0, read_count ) );

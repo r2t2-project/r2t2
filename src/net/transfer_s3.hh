@@ -35,10 +35,16 @@ protected:
   void do_action( Action&& action ) override;
   void worker_thread( const size_t thread_id ) override;
 
+  std::atomic<uint64_t>* _byte_counter { nullptr };
+
 public:
   S3TransferAgent( const S3StorageBackend& backend,
                    const size_t thread_count = MAX_THREADS,
-                   const bool upload_as_public = false );
+                   const bool upload_as_public = false,
+                   std::atomic<uint64_t>* byte_counter = nullptr );
+
+  S3TransferAgent( const S3TransferAgent& ) = delete;
+  S3TransferAgent& operator=( const S3TransferAgent& ) = delete;
 
   ~S3TransferAgent();
 };

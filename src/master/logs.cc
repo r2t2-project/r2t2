@@ -148,7 +148,8 @@ void LambdaMaster::handle_worker_stats()
 
     /* timestamp,workerId,pathsFinished,raysEnqueued,raysAssigned,raysDequeued,
        bytesEnqueued,bytesAssigned,bytesDequeued,bagsEnqueued,bagsAssigned,
-       bagsDequeued,numSamples,bytesSamples,bagsSamples,cpuUsage */
+       bagsDequeued,numSamples,bytesSamples,bagsSamples,cpuUsage,bytesDownloaded
+     */
 
     ws_stream << t.count() << ',' << worker.id << ',' << fixed
               << diff.finished_paths << ',' << diff.enqueued.rays << ','
@@ -158,7 +159,8 @@ void LambdaMaster::handle_worker_stats()
               << diff.assigned.count << ',' << diff.dequeued.count << ','
               << diff.samples.rays << ',' << diff.samples.bytes << ','
               << diff.samples.count << ',' << fixed << setprecision( 2 )
-              << ( 100 * diff.cpu_usage ) << '\n';
+              << ( 100 * diff.cpu_usage ) << ',' << diff.bytes_downloaded
+              << '\n';
 
     estimated_cost += T;
   }

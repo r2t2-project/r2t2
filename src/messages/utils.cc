@@ -37,6 +37,7 @@ protobuf::WorkerStats to_protobuf( const WorkerStats& stats )
   protobuf::WorkerStats proto;
   proto.set_finished_paths( stats.finished_paths );
   proto.set_cpu_usage( stats.cpu_usage );
+  proto.set_bytes_downloaded( stats.bytes_downloaded );
   return proto;
 }
 
@@ -128,7 +129,7 @@ RayBagInfo from_protobuf( const protobuf::RayBagInfo& proto )
 
 WorkerStats from_protobuf( const protobuf::WorkerStats& proto )
 {
-  return { proto.finished_paths(), proto.cpu_usage() };
+  return { proto.finished_paths(), proto.cpu_usage(), proto.bytes_downloaded() };
 }
 
 pbrt::AccumulatedStats from_protobuf( const protobuf::AccumulatedStats& proto )
