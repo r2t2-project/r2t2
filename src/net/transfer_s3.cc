@@ -162,7 +162,7 @@ void S3TransferAgent::worker_thread( const size_t thread_id )
         }
 
         if ( _byte_counter != nullptr ) {
-          _byte_counter->operator+=( read_count );
+          (*_byte_counter) += read_count;
         }
 
         parser->parse( buffer_span.substr( 0, read_count ) );
