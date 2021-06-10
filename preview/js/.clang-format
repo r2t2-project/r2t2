@@ -1,0 +1,10 @@
+---
+Language: Cpp
+BasedOnStyle: Mozilla
+ColumnLimit: 80
+SpacesInParentheses: true
+AlwaysBreakAfterReturnType: None
+AlwaysBreakAfterDefinitionReturnType: None
+SpaceBeforeCpp11BracedList: true
+BreakBeforeBinaryOperators: All
+...
