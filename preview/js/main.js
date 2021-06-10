@@ -11,10 +11,22 @@ class JobInfo {
 }
 
 class TileHelper {
-  constructor(width, height, tile_size) {
+  constructor(width, height, tile_count) {
     this.width = width;
     this.height = height;
+    this.tile_count = tile_count;
+
+    let tile_size = Math.ceil(Math.sqrt(width * height / tile_count));
+
+    while (Math.ceil(1.0 * width / tile_size)
+      * Math.ceil(1.0 * height / tile_size)
+      > tile_count) {
+      tile_size++;
+    }
+
     this.tile_size = tile_size;
+    console.log(this.tile_count);
+    console.log(this.tile_size);
 
     this.n_tiles = {
       x: Math.ceil(1.0 * this.width / this.tile_size),
@@ -46,7 +58,7 @@ const _job = new JobInfo(url_params.get('job_id'),
 
 const _tiles = new TileHelper(parseInt(url_params.get('width')),
   parseInt(url_params.get('height')),
-  parseInt(url_params.get('tilesize')));
+  parseInt(url_params.get('tiles')));
 
 let svg = document.querySelector('#output');
 
