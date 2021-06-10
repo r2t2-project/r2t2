@@ -25,9 +25,6 @@ class TileHelper {
     }
 
     this.tile_size = tile_size;
-    console.log(this.tile_count);
-    console.log(this.tile_size);
-
     this.n_tiles = {
       x: Math.ceil(1.0 * this.width / this.tile_size),
       y: Math.ceil(1.0 * this.height / this.tile_size)
@@ -60,17 +57,19 @@ const _tiles = new TileHelper(parseInt(url_params.get('width')),
   parseInt(url_params.get('height')),
   parseInt(url_params.get('tiles')));
 
-let svg = document.querySelector('#output');
+let ctx = document.getElementById("output").getContext('2d');
+
+let load_image = (url, x, y, w, h) => {
+  let img = new Image();
+  img.onload = () => {
+    ctx.drawImage(img, x, y, w, h);
+  };
+  img.src = url;
+};
 
 for (let i = 0; i < _tiles.n_tiles.x * _tiles.n_tiles.y; i++) {
   const bounds = _tiles.bounds(i);
   const url = _job.tile_url(i);
 
-  let element = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-  element.setAttributeNS(null, 'x', bounds.x);
-  element.setAttributeNS(null, 'y', bounds.y);
-  element.setAttributeNS(null, 'width', bounds.w);
-  element.setAttributeNS(null, 'height', bounds.h);
-  element.setAttributeNS(null, 'href', url);
-  svg.appendChild(element);
+  load_image(url, bounds.x, bounds.y, bounds.w, bounds.h);
 }
