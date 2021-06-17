@@ -5,8 +5,12 @@ class JobInfo {
     this.region = region;
   }
 
-  tile_url(tile_id) {
-    return `http://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}.png`;
+  tile_version_url(tile_id) {
+    return `http://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}`;
+  }
+
+  tile_url(tile_id, version) {
+    return `http://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}-${version}.png`;
   }
 }
 
@@ -59,17 +63,55 @@ const _tiles = new TileHelper(parseInt(url_params.get('width')),
 
 let ctx = document.getElementById("output").getContext('2d');
 
+let _tile_versions = new Array(_tiles.n_tiles.x * _tiles.n_tiles.y).fill(-1);
+
 let load_image = (url, x, y, w, h) => {
   let img = new Image();
+
   img.onload = () => {
-    ctx.drawImage(img, x, y, w, h);
+    ctx.fillStyle = 'rgba(255, 0, 0, 0.1)';
+    ctx.fillRect(x, y, w, h);
+    setTimeout(() => {
+      ctx.drawImage(img, x, y, w, h);
+    }, 500);
   };
+
   img.src = url;
 };
 
+function randint(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+let get_version = (tile_id, url) => {
+  let xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      if (xhr.status == 200) {
+        const new_ver = parseInt(xhr.responseText);
+        if (new_ver > _tile_versions[tile_id]) {
+          _tile_versions[tile_id] = new_ver;
+          const bounds = _tiles.bounds(tile_id);
+          const tile_url = _job.tile_url(tile_id, new_ver);
+          load_image(tile_url, bounds.x, bounds.y, bounds.w, bounds.h);
+        }
+      }
+
+      setTimeout(() => get_version(tile_id, url), 2000 + randint(-750, 750));
+    }
+  };
+
+  xhr.open('GET', url + "?d=" + new Date().getTime());
+  xhr.send(null);
+}
+
 for (let i = 0; i < _tiles.n_tiles.x * _tiles.n_tiles.y; i++) {
   const bounds = _tiles.bounds(i);
-  const url = _job.tile_url(i);
+  const tile_url = _job.tile_url(i);
+  const tile_ver_url = _job.tile_version_url(i);
 
-  load_image(url, bounds.x, bounds.y, bounds.w, bounds.h);
+  get_version(i, tile_ver_url);
 }
