@@ -6,11 +6,11 @@ class JobInfo {
   }
 
   tile_version_url(tile_id) {
-    return `http://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}`;
+    return `https://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}`;
   }
 
   tile_url(tile_id, version) {
-    return `http://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}-${version}.png`;
+    return `https://${this.bucket}.s3.${this.region}.amazonaws.com/jobs/${this.job_id}/out/${tile_id}-${version}.png`;
   }
 }
 
