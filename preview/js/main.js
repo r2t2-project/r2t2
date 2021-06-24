@@ -69,11 +69,49 @@ let load_image = (url, x, y, w, h) => {
   let img = new Image();
 
   img.onload = () => {
-    ctx.fillStyle = 'rgba(255, 0, 0, 0.1)';
+    W = Math.min(w / 4, 15);
+    H = Math.min(h / 4, 15);
+    p = Math.min(w / 4, h / 4, 4);
+
+    x0 = x + p;
+    y0 = y + p;
+    x1 = x + w - p;
+    y1 = y + h - p;
+
+    ctx.strokeStyle = 'rgba(255, 255, 0, 0.5)';
+    ctx.fillStyle = 'rgba(255, 255, 0, 0.05)';
+    ctx.lineWidth = 1.5;
+
+    //ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
     ctx.fillRect(x, y, w, h);
+
+    ctx.beginPath();
+    ctx.moveTo(x0, y0 + H);
+    ctx.lineTo(x0, y0);
+    ctx.lineTo(x0 + W, y0);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y0 + H);
+    ctx.lineTo(x1, y0);
+    ctx.lineTo(x1 - W, y0);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1 - H);
+    ctx.lineTo(x1, y1);
+    ctx.lineTo(x1 - W, y1);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x0, y1 - H);
+    ctx.lineTo(x0, y1);
+    ctx.lineTo(x0 + W, y1);
+    ctx.stroke();
+
     setTimeout(() => {
       ctx.drawImage(img, x, y, w, h);
-    }, 500);
+    }, 250);
   };
 
   img.src = url;
