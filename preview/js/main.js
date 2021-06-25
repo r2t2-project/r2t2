@@ -67,6 +67,7 @@ let _tile_versions = new Array(_tiles.n_tiles.x * _tiles.n_tiles.y).fill(-1);
 
 let load_image = (url, x, y, w, h) => {
   let img = new Image();
+  img.crossOrigin = "anonymous";
 
   img.onload = () => {
     W = Math.min(w / 4, 15);
@@ -153,3 +154,11 @@ for (let i = 0; i < _tiles.n_tiles.x * _tiles.n_tiles.y; i++) {
 
   get_version(i, tile_ver_url);
 }
+
+let save_btn = document.getElementById("save-button")
+save_btn.onclick = () => {
+  var link = document.createElement('a');
+  link.download = `output-${_job.job_id}.png`;
+  link.href = document.getElementById("output").toDataURL("image/png");
+  link.click();
+};

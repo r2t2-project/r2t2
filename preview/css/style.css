@@ -12,6 +12,7 @@ transform: translate(-50%, -50%);
 }
 
 #output {
+  border:1px solid #333;
   border-radius: 5px;
 }
 
@@ -26,4 +27,18 @@ transform: translate(-50%, -50%);
   font-family: monospace;
   font-size:13px;
   padding-left:10px;
+}
+
+#info button {
+  float:right;
+  border-radius:5px;
+  border:1px solid #333;
+  padding:3px 8px;
+  background: #000000;
+  color:#333;
+}
+
+#info button:hover {
+  color:#fff;
+  border:1px solid #fff;
 }
