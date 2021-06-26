@@ -53,6 +53,10 @@ class TileHelper {
 
 const url_params = new URLSearchParams(window.location.search);
 
+const _replay = (url_params.get('replay') === "1");
+
+console.log(_replay);
+
 const _job = new JobInfo(url_params.get('job_id'),
   url_params.get('bucket'),
   url_params.get('region'));
@@ -132,9 +136,9 @@ let get_version = (tile_id, url) => {
       if (xhr.status == 200) {
         const new_ver = parseInt(xhr.responseText);
         if (new_ver > _tile_versions[tile_id]) {
-          _tile_versions[tile_id] = new_ver;
+          _tile_versions[tile_id] = _replay ? (_tile_versions[tile_id] + 1) : new_ver;
           const bounds = _tiles.bounds(tile_id);
-          const tile_url = _job.tile_url(tile_id, new_ver);
+          const tile_url = _job.tile_url(tile_id, _tile_versions[tile_id]);
           load_image(tile_url, bounds.x, bounds.y, bounds.w, bounds.h);
         }
       }
@@ -155,10 +159,26 @@ for (let i = 0; i < _tiles.n_tiles.x * _tiles.n_tiles.y; i++) {
   get_version(i, tile_ver_url);
 }
 
-let save_btn = document.getElementById("save-button")
+let save_btn = document.getElementById("save-button");
 save_btn.onclick = () => {
   var link = document.createElement('a');
   link.download = `output-${_job.job_id}.png`;
   link.href = document.getElementById("output").toDataURL("image/png");
   link.click();
+};
+
+let replay_btn = document.getElementById("replay-button");
+
+if (_replay) {
+  replay_btn.classList.add("active");
+  replay_btn.title = "Show the latest available output";
+}
+else {
+  replay_btn.classList.remove("active");
+}
+
+replay_btn.onclick = () => {
+  var url_params = new URLSearchParams(window.location.search);
+  url_params.set("replay", _replay ? "0" : "1");
+  window.location.search = url_params.toString();
 };

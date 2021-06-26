@@ -19,7 +19,7 @@ transform: translate(-50%, -50%);
 #info {
   border-radius: 2px;
   width: 100%;
-  margin-top:5px;
+  margin-top:3px;
 }
 
 #info .text {
@@ -36,9 +36,16 @@ transform: translate(-50%, -50%);
   padding:3px 8px;
   background: #000000;
   color:#333;
+  margin-left:8px;
 }
 
 #info button:hover {
   color:#fff;
   border:1px solid #fff;
+}
+
+#info button.active {
+  color:#fff;
+  background: #3BB143;
+  border:1px solid #3BB143;
 }
